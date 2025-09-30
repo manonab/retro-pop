@@ -34,11 +34,11 @@ const Footer = () => {
                     <div>
                         <h4 className="font-semibold mb-4 text-neon-magenta">Catalogue</h4>
                         <ul className="space-y-2 text-sm">
-                            <li><a href="#" className="text-muted-foreground hover:text-primary hover-neon transition-colors">Jeux vidéo</a></li>
-                            <li><a href="#" className="text-muted-foreground hover:text-secondary hover-neon transition-colors">Films & Séries</a></li>
-                            <li><a href="#" className="text-muted-foreground hover:text-accent hover-neon transition-colors">Livres & BD</a></li>
-                            <li><a href="#" className="text-muted-foreground hover:text-primary hover-neon transition-colors">Musique</a></li>
-                            <li><a href="#" className="text-muted-foreground hover:text-secondary hover-neon transition-colors">Goodies</a></li>
+                            <li><a href="/catalog/games" className="text-muted-foreground hover:text-primary hover-neon transition-colors">Jeux vidéo</a></li>
+                            <li><a href="/catalog/movies" className="text-muted-foreground hover:text-secondary hover-neon transition-colors">Films & Séries</a></li>
+                            <li><a href="/catalog/books" className="text-muted-foreground hover:text-accent hover-neon transition-colors">Livres & BD</a></li>
+                            <li><a href="/catalog/music" className="text-muted-foreground hover:text-primary hover-neon transition-colors">Musique</a></li>
+                            <li><a href="/catalog/collectibles" className="text-muted-foreground hover:text-secondary hover-neon transition-colors">Goodies</a></li>
                         </ul>
                     </div>
                     <div>

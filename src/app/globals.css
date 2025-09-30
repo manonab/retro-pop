@@ -1,70 +1,110 @@
 @import "tailwindcss";
 
-  @layer base {
-    :root {
-      /* RETRO POP CULTURE PALETTE - Warm, nostalgic, and vibrant! */
+@layer base {
+  :root {
+    /* Base Colors - Warm Cream Background */
+    --background: 45 35% 96%;
+    --foreground: 25 15% 25%;
 
-      /* Backgrounds & Text */
-      --background: 30 10% 95%;          /* Blanc cassé doux pour un fond clair et chaleureux */
-      --foreground: 220 20% 10%;         /* Noir profond pour le texte principal */
-      --card: 0 0% 100%;                 /* Blanc pur pour les cartes */
-      --card-foreground: 220 20% 10%;    /* Noir profond pour le texte des cartes */
-      --popover: 0 0% 100%;              /* Blanc pur pour les popovers */
-      --popover-foreground: 220 20% 10%; /* Noir profond pour le texte des popovers */
+    /* Card Components - Soft Warm Tones */
+    --card: 45 25% 92%;
+    --card-foreground: 25 15% 25%;
 
-      /* Primary: Rouge Vintage (#E74C3C) */
-      --primary: 6 70% 65%;
-      --primary-foreground: 0 0% 100%;   /* Blanc pour le texte sur fond rouge */
-      --primary-glow: 6 70% 80%;         /* Rouge plus clair pour les effets de glow */
+    /* Popover Components */
+    --popover: 45 25% 92%;
+    --popover-foreground: 25 15% 25%;
 
-      /* Secondary: Bleu Néons (#3498DB) */
-      --secondary: 204 80% 60%;
-      --secondary-foreground: 0 0% 100%; /* Blanc pour le texte sur fond bleu */
-      --secondary-glow: 204 80% 80%;     /* Bleu plus clair pour les effets de glow */
+    /* Primary - Rich Amber */
+    --primary: 35 85% 55%;
+    --primary-foreground: 45 35% 96%;
+    --primary-hover: 35 85% 50%;
 
-      /* Muted: Violet Électrique (#9B59B6) */
-      --muted: 270 40% 50%;
-      --muted-foreground: 0 0% 100%;    /* Blanc pour le texte sur fond violet */
+    /* Secondary - Warm Terracotta */
+    --secondary: 18 60% 75%;
+    --secondary-foreground: 25 15% 25%;
 
-      /* Accent: Jaune Rétro (#F1C40F) */
-      --accent: 45 100% 60%;
-      --accent-foreground: 220 20% 10%; /* Noir profond pour le texte sur fond jaune */
-      --destructive: 0 80% 60%;          /* Rouge pour les alertes/erreurs */
-      --destructive-foreground: 0 0% 100%; /* Blanc pour le texte sur fond rouge d'erreur */
+    /* Muted - Soft Beige */
+    --muted: 40 20% 88%;
+    --muted-foreground: 25 15% 45%;
 
-      /* Borders & Inputs */
-      --border: 270 20% 40%;             /* Violet doux pour les bordures */
-      --input: 0 0% 95%;                 /* Gris très clair pour les champs de saisie */
-      --ring: 204 80% 60%;               /* Bleu néon pour les contours (focus, etc.) */
+    /* Accent - Warm Sienna */
+    --accent: 18 45% 65%;
+    --accent-foreground: 45 35% 96%;
 
-      /* Gradients - Inspired by retro waves and pop culture */
-      --gradient-retro-wave: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--accent)));
-      --gradient-vintage-glow: linear-gradient(45deg, hsl(var(--primary-glow)), hsl(var(--secondary-glow)), hsl(var(--accent)));
-      --gradient-pop-bg: linear-gradient(180deg, hsl(var(--background)), hsl(30 20% 90%));
-      --gradient-rainbow-retro: linear-gradient(90deg, hsl(6 70% 65%), hsl(45 100% 60%), hsl(120 60% 60%), hsl(204 80% 60%), hsl(270 40% 50%));
+    /* Destructive - Muted Red */
+    --destructive: 5 65% 60%;
+    --destructive-foreground: 45 35% 96%;
 
-      /* Glow & Shadow Effects - Subtle but nostalgic */
-      --shadow-retro: 0 0 20px hsl(var(--primary) / 0.4), 0 0 40px hsl(var(--primary) / 0.2);
-      --shadow-vintage: 0 0 20px hsl(var(--secondary) / 0.4), 0 0 40px hsl(var(--secondary) / 0.2);
-      --shadow-glow: 0 0 10px hsl(var(--accent) / 0.6), 0 0 20px hsl(var(--accent) / 0.4);
-      --shadow-rainbow-retro: 0 0 10px hsl(6 70% 65% / 0.3), 0 0 20px hsl(204 80% 60% / 0.3);
+    /* Borders & Inputs - Soft Tan */
+    --border: 35 15% 82%;
+    --input: 35 15% 85%;
+    --ring: 35 85% 55%;
 
-      /* Transitions & Animations */
-      --transition-retro: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      --pulse-retro: 0 0 10px currentColor, 0 0 20px currentColor;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(35, 85%, 55%), hsl(25, 70%, 60%));
+    --gradient-warm: linear-gradient(180deg, hsl(45, 35%, 96%), hsl(40, 25%, 92%));
+    --gradient-hero: linear-gradient(135deg, hsl(35, 85%, 55%), hsl(18, 60%, 65%));
 
-      /* Sidebar - Warm and inviting */
-      --sidebar-background: 30 10% 90%;
-      --sidebar-foreground: 220 20% 10%;
-      --sidebar-primary: 30 20% 80%;
-      --sidebar-primary-foreground: 0 0% 100%;
-      --sidebar-accent: 30 30% 95%;
-      --sidebar-accent-foreground: 220 20% 10%;
-      --sidebar-border: 30 10% 80%;
-      --sidebar-ring: 204 80% 60%;
+    /* Shadows */
+    --shadow-warm: 0 10px 30px -10px hsl(35 85% 55% / 0.2);
+    --shadow-soft: 0 4px 20px -5px hsl(25 15% 25% / 0.1);
+    --shadow-card: 0 6px 25px -8px hsl(25 15% 25% / 0.15);
 
-      /* Border radius */
-      --radius: 0.5rem;
-    }
+    /* Border Radius */
+    --radius: 12px;
 
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
 }

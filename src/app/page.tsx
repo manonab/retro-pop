@@ -1,17 +1,13 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import HeroSection from "@/components/HeroSection";
-import FeaturedProducts from "@/components/FeaturedProducts";
+import Hero from "@/components/Hero";
+import CategoryGrid from "@/components/catalog/CatalogGrid";
 
 export default function Home() {
   return (
       <div className="min-h-screen bg-background">
-          <Header/>
           <main>
-              <HeroSection/>
-              <FeaturedProducts />
+              <Hero/>
+              <CategoryGrid />
           </main>
-          <Footer/>
       </div>
   );
 }
