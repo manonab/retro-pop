@@ -4,8 +4,28 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
+import { useState } from "react";
+import { useAuth } from "@/mutations/useAuth";
 
-const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: () => void })=> {
+const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: () => void }) => {
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const { login } = useAuth(); // Utilisation de `login` pour la connexion
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            await login.mutateAsync({ email, password });
+            onSuccess(); // Redirige vers le dashboard après une connexion réussie
+        } catch (error) {
+            console.error("Erreur de connexion:", error);
+        }
+    };
+
+    const handleSwitchToRegister = () => {
+        onSwitch(); // Bascule vers le formulaire d'inscription
+    };
+
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-16">
@@ -17,39 +37,62 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                         <h1 className="text-3xl font-bold text-foreground mb-2">Bienvenue</h1>
                         <p className="text-muted-foreground">Connectez-vous à votre compte</p>
                     </div>
-
                     <Card className="shadow-card">
                         <CardContent className="p-6">
-                            <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); onSuccess(); }}>
+                            <form className="space-y-4" onSubmit={handleLogin}>
                                 <div>
                                     <Label htmlFor="loginEmail">Email</Label>
-                                    <Input id="loginEmail" type="email" placeholder="jean.dupont@example.com" />
+                                    <Input
+                                        id="loginEmail"
+                                        type="email"
+                                        placeholder="jean.dupont@example.com"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
                                 </div>
                                 <div>
                                     <Label htmlFor="loginPassword">Mot de passe</Label>
-                                    <Input id="loginPassword" type="password" placeholder="••••••••" />
+                                    <Input
+                                        id="loginPassword"
+                                        type="password"
+                                        placeholder="••••••••"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
                                 </div>
                                 <div className="text-right">
-                                    <button type="button" className="text-sm text-primary hover:underline">Mot de passe oublié ?</button>
+                                    <Button
+                                        type="button"
+                                        className="text-sm text-primary hover:underline bg-transparent p-0 h-auto"
+                                        onClick={() => alert("Fonctionnalité de réinitialisation de mot de passe à implémenter")}
+                                    >
+                                        Mot de passe oublié ?
+                                    </Button>
                                 </div>
-                                <Button variant="hero" className="w-full" type="submit">Se connecter</Button>
+                                <Button variant="hero" className="w-full" type="submit" disabled={login.isPending}>
+                                    {login.isPending ? "Connexion en cours..." : "Se connecter"}
+                                </Button>
                                 <p className="text-sm text-center text-muted-foreground">
                                     Nouveau membre ?{" "}
-                                    <button type="button" onClick={onSwitch} className="text-primary hover:underline">Créer un compte</button>
+                                    <Button
+                                        type="button"
+                                        onClick={handleSwitchToRegister}
+                                        className="text-primary hover:underline bg-transparent p-0 h-auto"
+                                        variant="link"
+                                    >
+                                        Créer un compte
+                                    </Button>
                                 </p>
+                                {login.error && (
+                                    <p className="text-sm text-red-500 text-center">{login.error.message}</p>
+                                )}
                             </form>
                         </CardContent>
                     </Card>
-
-                    <div className="mt-6">
-                        <div className="text-center text-muted-foreground mb-4">
-                            <span className="px-4 bg-background">ou</span>
-                        </div>
-                        <Button variant="outline" className="w-full">Continuer avec Google</Button>
-                    </div>
                 </div>
             </div>
         </div>
     );
-}
+};
+
 export default LoginForm;

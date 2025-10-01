@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/TextArea";
 import { Button } from "@/components/ui/Button";
-import type { User } from "../../Account";
+import type { User } from "../../Dashboard";
 
 const ProfileInfo = ({ user }: { user: User }) => {
     return (
