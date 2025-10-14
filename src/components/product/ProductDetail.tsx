@@ -15,7 +15,7 @@ type Props = {
 const ProductDetail = ({product} : Props) => {
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const [selectedImage, setSelectedImage] = useState<number>(0);
-    console.log(product.product_images)
+
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-8">

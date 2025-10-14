@@ -2,10 +2,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchCategoryWithProductsBySlug, fetchCategories } from "@/lib/services/catalog";
 
-export function useCategoryCatalog(slug: string, opts?: { page?: number; pageSize?: number; q?: string }) {
+export function useCategoryCatalog(slug: string) {
     return useQuery({
-        queryKey: ["category-catalog", slug, opts],
-        queryFn: () => fetchCategoryWithProductsBySlug(slug, opts),
+        queryKey: ["category-catalog", slug],
+        queryFn: () => fetchCategoryWithProductsBySlug(slug),
         enabled: !!slug,
     });
 }

@@ -5,25 +5,51 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { useState } from "react";
-import { useAuth } from "@/mutations/useAuth";
+import { useAuth } from "@/mutations/auth/useAuth";
 
 const RegisterForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: () => void }) => {
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        phone: "",
+        address: "",
+        city: "",
+        postalCode: "",
+    });
+
     const { signup } = useAuth();
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
+    };
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await signup.mutateAsync({ email, password });
-            onSuccess(); // Redirige vers le dashboard après une inscription réussie
+            await signup.mutateAsync({
+                email: formData.email,
+                password: formData.password,
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                phone: formData.phone,
+                address: formData.address,
+                city: formData.city,
+                postalCode: formData.postalCode,
+            });
+            onSuccess();
         } catch (error) {
             console.error("Erreur d'inscription:", error);
         }
     };
 
     const handleSwitchToLogin = () => {
-        onSwitch(); // Bascule vers le formulaire de connexion
+        onSwitch();
     };
 
     return (
@@ -40,29 +66,106 @@ const RegisterForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch
                     <Card className="shadow-card">
                         <CardContent className="p-6">
                             <form className="space-y-4" onSubmit={handleSignup}>
+                                {/* Email */}
                                 <div>
-                                    <Label htmlFor="registerEmail">Email</Label>
+                                    <Label htmlFor="email">Email</Label>
                                     <Input
-                                        id="registerEmail"
+                                        id="email"
                                         type="email"
                                         placeholder="jean.dupont@example.com"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        value={formData.email}
+                                        onChange={handleChange}
                                     />
                                 </div>
+
                                 <div>
-                                    <Label htmlFor="registerPassword">Mot de passe</Label>
+                                    <Label htmlFor="password">Mot de passe</Label>
                                     <Input
-                                        id="registerPassword"
+                                        id="password"
                                         type="password"
                                         placeholder="••••••••"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        value={formData.password}
+                                        onChange={handleChange}
                                     />
                                 </div>
+
+                                <div>
+                                    <Label htmlFor="firstName">Prénom</Label>
+                                    <Input
+                                        id="firstName"
+                                        type="text"
+                                        placeholder="Jean"
+                                        value={formData.firstName}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                {/* Nom de famille */}
+                                <div>
+                                    <Label htmlFor="lastName">Nom de famille</Label>
+                                    <Input
+                                        id="lastName"
+                                        type="text"
+                                        placeholder="Dupont"
+                                        value={formData.lastName}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                {/* Téléphone */}
+                                <div>
+                                    <Label htmlFor="phone">Téléphone</Label>
+                                    <Input
+                                        id="phone"
+                                        type="tel"
+                                        placeholder="+33 6 12 34 56 78"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                {/* Adresse */}
+                                <div>
+                                    <Label htmlFor="address">Adresse</Label>
+                                    <Input
+                                        id="address"
+                                        type="text"
+                                        placeholder="123 Rue de la Paix"
+                                        value={formData.address}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                {/* Ville et Code postal */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <Label htmlFor="postalCode">Code postal</Label>
+                                        <Input
+                                            id="postalCode"
+                                            type="text"
+                                            placeholder="75001"
+                                            value={formData.postalCode}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                    <div>
+                                        <Label htmlFor="city">Ville</Label>
+                                        <Input
+                                            id="city"
+                                            type="text"
+                                            placeholder="Paris"
+                                            value={formData.city}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Bouton d'inscription */}
                                 <Button variant="hero" className="w-full" type="submit" disabled={signup.isPending}>
                                     {signup.isPending ? "Inscription en cours..." : "S'inscrire"}
                                 </Button>
+
+                                {/* Lien vers la connexion */}
                                 <p className="text-sm text-center text-muted-foreground">
                                     Déjà membre ?{" "}
                                     <Button
@@ -74,6 +177,8 @@ const RegisterForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch
                                         Se connecter
                                     </Button>
                                 </p>
+
+                                {/* Affichage des erreurs */}
                                 {signup.error && (
                                     <p className="text-sm text-red-500 text-center">{signup.error.message}</p>
                                 )}

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useCategoryCatalog } from "@/query/useCatalog";
+import { useCategoryCatalog } from "@/queries/useCatalog";
 import Image from "next/image";
 import Link from "next/link";
 import { CATEGORY_ICON_MAP } from "@/lib/services/catalog";

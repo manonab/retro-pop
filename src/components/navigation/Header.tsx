@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/Sheet";
 import Link from "next/link";
 
 const Header = () => {
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     const categories = [
         { name: "Jeux Rétro", path: "/catalog/games" },
@@ -21,17 +21,14 @@ const Header = () => {
     return (
         <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-soft">
             <div className="container mx-auto px-4">
-                {/* Top Bar */}
                 <div className="flex items-center justify-between h-16">
-                    {/* Logo */}
-                    <Link href="/public" className="flex items-center space-x-2">
+                    <Link href="/" className="flex items-center space-x-2">
                         <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                             <span className="text-primary-foreground font-bold text-lg">R</span>
                         </div>
-                        <span className="text-xl font-bold text-foreground">RetroMarket</span>
+                        <span className="text-xl font-bold text-foreground">Retro pop</span>
                     </Link>
 
-                    {/* Search Bar - Desktop */}
                     <div className="hidden md:flex items-center space-x-2 flex-1 max-w-lg mx-8">
                         <div className="relative flex-1">
                             <Input

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCategories } from "@/query/useCatalog";
+import { useCategories } from "@/queries/useCatalog";
 import {CATEGORY_ICON_MAP, CATEGORY_GRADIENT_BY_SLUG, DEFAULT_GRADIENT} from "@/lib/services/catalog";
 import Image from "next/image";
 

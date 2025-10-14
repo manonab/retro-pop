@@ -11,6 +11,7 @@ const SheetTrigger = SheetPrimitive.Trigger;
 
 const SheetClose = SheetPrimitive.Close;
 
+
 const SheetPortal = SheetPrimitive.Portal;
 
 const SheetOverlay = React.forwardRef<
@@ -56,6 +57,7 @@ const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Con
         <SheetPortal>
             <SheetOverlay />
             <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
+                    <SheetPrimitive.DialogTitle className="hidden">Mon titre caché</SheetPrimitive.DialogTitle>
                 {children}
                 <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity data-[state=open]:bg-secondary hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
                     <X className="h-4 w-4" />

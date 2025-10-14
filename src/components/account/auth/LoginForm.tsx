@@ -4,26 +4,26 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
-import { useState } from "react";
-import { useAuth } from "@/mutations/useAuth";
+import {FormEvent, useState} from "react";
+import { useAuth } from "@/mutations/auth/useAuth";
 
 const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: () => void }) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const { login } = useAuth(); // Utilisation de `login` pour la connexion
+    const { login } = useAuth();
 
-    const handleLogin = async (e: React.FormEvent) => {
+    const handleLogin = async (e: FormEvent) => {
         e.preventDefault();
         try {
             await login.mutateAsync({ email, password });
-            onSuccess(); // Redirige vers le dashboard après une connexion réussie
+            onSuccess();
         } catch (error) {
             console.error("Erreur de connexion:", error);
         }
     };
 
     const handleSwitchToRegister = () => {
-        onSwitch(); // Bascule vers le formulaire d'inscription
+        onSwitch();
     };
 
     return (

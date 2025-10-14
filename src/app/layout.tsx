@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/output.css";
 import Header from "@/components/navigation/Header";
 import Footer from "@/components/navigation/Footer";
 import Providers from "@/context/Providers";
+import {AppToastProvider} from "@/components/ui/Toast/ToastProvider";
+import { ReactNode } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,16 +25,17 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
       <html lang="fr">
-      {/* suppressHydrationWarning évite les warnings si le body diffère légèrement au 1er render */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
       <Providers>
-          <Header/>
-          {children}
-          <Footer/>
+          <AppToastProvider>
+              <Header/>
+              {children}
+              <Footer/>
+          </AppToastProvider>
       </Providers>
       </body>
       </html>

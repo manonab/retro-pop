@@ -1,12 +1,13 @@
 import { User } from "@/types/user";
 import { Button } from "@/components/ui/Button";
+import Image from "next/image";
 
 const ProfileHeader = ({ user, onLogout }: { user: User; onLogout: () => void }) => {
     return (
         <div className="flex justify-between items-center mb-8">
             <div className="flex items-center space-x-4">
                 {user.avatarUrl ? (
-                    <img src={user.avatarUrl} alt="Avatar" className="w-16 h-16 rounded-full" />
+                    <Image src={user.avatarUrl} width={200} height={200} alt="Avatar" className="w-16 h-16 rounded-full" />
                 ) : (
                     <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center text-primary-foreground font-bold">
                         {user.displayName?.[0] || user.email[0]}
@@ -20,6 +21,9 @@ const ProfileHeader = ({ user, onLogout }: { user: User; onLogout: () => void })
                     {user.isPro && <span className="text-sm text-green-500">Compte Pro</span>}
                 </div>
             </div>
+            <Button variant="outline" onClick={onLogout}>
+                Déconnexion
+            </Button>
             <Button variant="outline" onClick={onLogout}>
                 Déconnexion
             </Button>

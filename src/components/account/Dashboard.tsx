@@ -3,15 +3,15 @@
 import LoginForm from "./auth/LoginForm";
 import RegisterForm from "./auth/RegisterForm";
 import {useState} from "react";
-import {useAuth} from "@/mutations/useAuth";
-import {useUser} from "@/query/useProfile";
+import {useAuth} from "@/mutations/auth/useAuth";
+import {useUser} from "@/queries/useProfile";
 import ProfileHeader from "@/components/account/profil/ProfileHeader";
 import ProfileTabs from "@/components/account/profil/ProfileTabs";
 
 const Dashboard = () => {
     const { user, isLoading } = useUser();
     const { logout } = useAuth();
-    const [isRegistering, setIsRegistering] = useState(false);
+    const [isRegistering, setIsRegistering] = useState<boolean>(false);
 
     if (isLoading) {
         return (
