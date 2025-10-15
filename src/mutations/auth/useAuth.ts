@@ -1,30 +1,32 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabaseClient';
-import {ToastType, useToast} from "@/components/ui/Toast";
+import { ToastType, useToast } from "@/components/ui/Toast";
+import { useCart } from "@/stores/useCart"; // ✅
 
 export const useAuth = () => {
     const qc = useQueryClient();
     const { openToast } = useToast();
 
-
     const login = useMutation({
         mutationFn: async ({ email, password }: { email: string; password: string }) => {
             const { data, error } = await supabase.auth.signInWithPassword({ email, password });
             if (error) throw error;
-            return data
+            return data;
         },
-        onSuccess: () => {
+        onSuccess: async () => {
+            // ✅ Fusionner local -> serveur et vider le local après
+            const cart = useCart.getState();
+            try {
+                await cart.syncToServer({ mergeOnSync: true, clearLocalAfterSync: true });
+            } catch (e) {
+                console.error("cart sync on login failed:", e);
+            }
+
             qc.invalidateQueries({ queryKey: ["user"] });
-            openToast({
-                type: ToastType.SUCCESS,
-                description: "Connexion réussie. Bienvenue 👋",
-            });
+            openToast({ type: ToastType.SUCCESS, description: "Connexion réussie. Bienvenue 👋" });
         },
         onError: (err) => {
-            openToast({
-                type: ToastType.ERROR,
-                description: `Échec de la connexion : ${err}`,
-            });
+            openToast({ type: ToastType.ERROR, description: `Échec de la connexion : ${err}` });
         },
     });
 
@@ -70,18 +72,20 @@ export const useAuth = () => {
                 if (updateError) throw updateError;
             }
         },
-        onSuccess: () => {
+        onSuccess: async () => {
+            // (optionnel) même logique que login si tu connectes direct après signup
+            const cart = useCart.getState();
+            try {
+                await cart.syncToServer({ mergeOnSync: true, clearLocalAfterSync: true });
+            } catch (e) {
+                console.error("cart sync on signup failed:", e);
+            }
+
             qc.invalidateQueries({ queryKey: ["user"] });
-            openToast({
-                type: ToastType.SUCCESS,
-                description: "Compte créé ✅. Bienvenue !",
-            });
+            openToast({ type: ToastType.SUCCESS, description: "Compte créé ✅. Bienvenue !" });
         },
         onError: (err) => {
-            openToast({
-                type: ToastType.ERROR,
-                description: `Échec de l’inscription : ${err}`,
-            });
+            openToast({ type: ToastType.ERROR, description: `Échec de l’inscription : ${err}` });
         },
     });
 
@@ -91,17 +95,20 @@ export const useAuth = () => {
             if (error) throw error;
         },
         onSuccess: () => {
+            // ✅ Vider totalement le panier côté client
+            try {
+                const cart = useCart.getState();
+                cart.clear();                    // vide le store Zustand
+                localStorage.removeItem("cart_v1"); // supprime la persistance
+            } catch (e) {
+                console.error("cart clear on logout failed:", e);
+            }
+
             qc.setQueryData(["user"], null);
-            openToast({
-                type: ToastType.SUCCESS,
-                description: "Déconnexion effectuée.",
-            });
+            openToast({ type: ToastType.SUCCESS, description: "Déconnexion effectuée." });
         },
         onError: (err) => {
-            openToast({
-                type: ToastType.ERROR,
-                description: `Impossible de se déconnecter : ${err}`,
-            });
+            openToast({ type: ToastType.ERROR, description: `Impossible de se déconnecter : ${err}` });
         },
     });
 

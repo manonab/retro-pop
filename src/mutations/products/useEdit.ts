@@ -10,6 +10,12 @@ type UseEditProductOptions = {
     userId?: string;
 };
 
+export const qk = {
+    productBySlug: (userId: string, slug: string) => ["productBySlug", userId, slug] as const,
+    myProducts: (userId: string) => ["my-products", userId] as const,
+    products: ["products"] as const,
+};
+
 export function useEditProduct(opts: UseEditProductOptions = {}) {
     const qc = useQueryClient();
     const { openToast } = useToast();
@@ -87,10 +93,8 @@ export function useEditProduct(opts: UseEditProductOptions = {}) {
         },
 
         onSuccess: (product, variables) => {
-            qc.invalidateQueries({ queryKey: ["products"] });
+            qc.invalidateQueries({ queryKey: ["productBySlug", product.slug] });
             if (userId) qc.invalidateQueries({ queryKey: ["my-products", userId] });
-            // invalidate fiche détail
-            if (product?.slug) qc.invalidateQueries({ queryKey: ["product", product.slug] });
 
             openToast({
                 type: ToastType.SUCCESS,

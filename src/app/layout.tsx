@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "@/output.css";
+import "@/app/globals.css"
 import Header from "@/components/navigation/Header";
 import Footer from "@/components/navigation/Footer";
 import Providers from "@/context/Providers";

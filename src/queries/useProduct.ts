@@ -3,7 +3,7 @@ import {ProductBase} from "@/types/products";
 import {supabase} from "@/lib/supabaseClient";
 import { User } from "@/types/user";
 
-export function useMyProductBySlug(user?: User, slug?: string) {
+export function useMyProductBySlug(user?: User | null, slug?: string) {
     return useQuery({
         queryKey: ["productBySlug", slug],
         enabled: !!user?.id && !!slug,

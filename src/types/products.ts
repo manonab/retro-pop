@@ -1,6 +1,6 @@
 export const PRODUCT_CONDITIONS = ["Mint", "Très bon", "Bon", "Correct"] as const;
-export const PRODUCT_STATUSES = ["active", "sold", "paused", "deleted"] as const;
-export const PRODUCT_RARITIES = ["common", "rare", "epic", "legendary"] as const;
+export const PRODUCT_STATUSES   = ["active", "sold", "paused", "deleted"] as const;
+export const PRODUCT_RARITIES   = ["COMMON", "RARE", "EPIC", "LEGENDARY"] as const;
 
 export type ProductCondition = typeof PRODUCT_CONDITIONS[number];
 export type ProductStatus    = typeof PRODUCT_STATUSES[number];
@@ -36,7 +36,7 @@ export type Profiles = {
     avatar_url: string;
     is_pro: boolean;
     created_at: string;
-}
+};
 
 export type ProductBase = {
     id: string;
@@ -48,7 +48,7 @@ export type ProductBase = {
     currency: string;
     condition: ProductCondition;
     category_id: number;
-    rarity: string;
+    rarity: ProductRarity;
     status: ProductStatus;
     created_at: string;
     updated_at: string;
@@ -62,9 +62,7 @@ export type ProductDetail = ProductBase & {
 
 export type ProductDetailWithSeller = ProductDetail & { seller: SellerLite | null };
 
-
 export type NewProductInput = {
-    id: string;
     seller_id: string;
     title: string;
     slug: string | null;
@@ -72,12 +70,9 @@ export type NewProductInput = {
     price: number;
     currency: string;
     condition: ProductCondition;
-    category_id: number;
-    rarity: string;
+    category_id: number | null;
+    rarity: ProductRarity;
     status: ProductStatus;
-    created_at: string;
-    updated_at: string;
-    product_images: { id: string; url: string; position: number }[];
 };
 
 export type EditProductInput = {
@@ -88,7 +83,7 @@ export type EditProductInput = {
     currency?: string;
     condition?: ProductCondition;
     category_id?: number | null;
-    rarity?: ProductRarity | null;
+    rarity?: ProductRarity;
     status?: ProductStatus;
     newImages?: File[];
     deletedImageIds?: string[];

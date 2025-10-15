@@ -24,9 +24,6 @@ const ProfileHeader = ({ user, onLogout }: { user: User; onLogout: () => void })
             <Button variant="outline" onClick={onLogout}>
                 Déconnexion
             </Button>
-            <Button variant="outline" onClick={onLogout}>
-                Déconnexion
-            </Button>
         </div>
     );
 };

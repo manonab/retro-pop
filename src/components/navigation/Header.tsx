@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { Search, ShoppingCart, Heart, User, Menu } from "lucide-react";
@@ -6,9 +6,29 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/Sheet";
 import Link from "next/link";
+import { useCart } from "@/stores/useCart";
+import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
+    const router = useRouter();
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const items = useCart((s) => s.items);
+    const count = useCart((s) => s.count());
+    const remove = useCart((s) => s.remove);
+    const clear = useCart((s) => s.clear);
+    const syncToServer = useCart((s) => s.syncToServer);
+
+
+    async function handleCheckout() {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+            router.push("/login?redirect=/checkout");
+            return;
+        }
+        await syncToServer({ mergeOnSync: true });
+        router.push("/checkout");
+    }
 
     const categories = [
         { name: "Jeux Rétro", path: "/catalog/games" },
@@ -38,7 +58,7 @@ const Header = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="pl-10 bg-card border-border"
                             />
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
                         </div>
                         <Button variant="default" size="sm">
                             Rechercher
@@ -47,25 +67,72 @@ const Header = () => {
 
                     {/* Actions */}
                     <div className="flex items-center space-x-2">
-                        <Link href="/favorites">
-                            <Button variant="ghost" size="sm" className="hidden sm:flex">
-                                <Heart className="w-4 h-4 mr-1" />
-                                Favoris
-                            </Button>
-                        </Link>
+                        {/*<Link href="/favorites">*/}
+                        {/*    <Button variant="ghost" size="sm" className="hidden sm:flex">*/}
+                        {/*        <Heart className="w-4 h-4 mr-1" />*/}
+                        {/*        Favoris*/}
+                        {/*    </Button>*/}
+                        {/*</Link>*/}
 
                         <Sheet>
                             <SheetTrigger asChild>
                                 <Button variant="ghost" size="sm" className="relative">
                                     <ShoppingCart className="w-4 h-4 mr-1" />
                                     <span className="hidden sm:inline">Panier</span>
-                                    <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center"></span>
+                                    {count > 0 && (
+                                        <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center">{count}</span>
+                                    )}
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent>
-                                <div className="py-6">
+
+                            <SheetContent className="w-[420px] sm:w-[480px]">
+                                <div className="py-6 h-full flex flex-col">
                                     <h2 className="text-lg font-semibold mb-4">Mon Panier</h2>
-                                    <p className="text-muted-foreground">Votre panier est vide</p>
+
+                                    {items.length === 0 ? (
+                                        <div className="text-muted-foreground">
+                                            Ton panier est vide.
+                                            <div className="mt-4">
+                                                <Link href="/">
+                                                    <Button variant="outline" size="sm">Continuer mes achats</Button>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="space-y-3 overflow-auto pr-1">
+                                                {items.map((it) => (
+                                                    <div key={it.product_id} className="flex items-center justify-between rounded-lg border p-3">
+                                                        {/*<div className="min-w-0">*/}
+                                                        {/*    <Link href={`/product/${it.product_id}`} className="font-medium hover:underline line-clamp-1">*/}
+                                                        {/*        {it.product_slug}*/}
+                                                        {/*    </Link>*/}
+                                                        {/*</div>*/}
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            className="text-red-600"
+                                                            onClick={() => remove(it.product_id)}
+                                                        >
+                                                            Supprimer
+                                                        </Button>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            <div className="mt-4 flex flex-col gap-2">
+                                                <Link href="/cart">
+                                                    <Button variant="outline" className="w-full">Voir le panier</Button>
+                                                </Link>
+                                                <Button className="w-full" onClick={handleCheckout}>
+                                                    Passer au paiement
+                                                </Button>
+                                                <Button variant="ghost" className="w-full" onClick={() => clear()}>
+                                                    Vider le panier
+                                                </Button>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </SheetContent>
                         </Sheet>
@@ -113,13 +180,8 @@ const Header = () => {
                                 {category.name}
                             </Link>
                         ))}
-                        <Link
-                            href="/sell"
-                            className="ml-auto"
-                        >
-                            <Button variant="outline" size="sm">
-                                Vendre un objet
-                            </Button>
+                        <Link href="/account/create" className="ml-auto">
+                            <Button variant="outline" size="sm">Vendre un objet</Button>
                         </Link>
                     </div>
                 </nav>
@@ -134,7 +196,7 @@ const Header = () => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="pl-10 bg-card border-border"
                         />
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
                     </div>
                 </div>
             </div>

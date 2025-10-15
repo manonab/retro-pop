@@ -26,9 +26,7 @@ const HeroSection = () => {
             <div className="container relative z-10 mx-auto px-4 text-center">
                 <div className="max-w-4xl mx-auto">
                     <h1 className="text-5xl md:text-7xl font-bold mb-6 text-neon-cyan pulse-cyber">
-                        Redonnez vie aux
-                        <span className="block text-electric animate-pulse">
-              classiques
+                        Redonnez vie aux <span className="block text-electric animate-pulse"> classiques
             </span>
                     </h1>
 

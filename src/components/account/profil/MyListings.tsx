@@ -31,47 +31,50 @@ export default function MyListings({ userId }: { userId: string }) {
 
                 <div className="space-y-3">
                     {products.map((product: ProductBase) => (
-                        <div
-                            key={product.id}
-                            className="border rounded-md p-3 flex items-center justify-between"
-                        >
-                            <div className="flex items-center gap-3">
-                                {product.product_images?.[0]?.url && (
-                                    <Image
-                                        height={200}
-                                        width={200}
-                                        src={product.product_images[0].url}
-                                        alt={product.title}
-                                        className="w-16 h-16 object-cover rounded"
-                                    />
-                                )}
-                                <div>
-                                    <div className="font-medium">{product.title}</div>
-                                    <div className="text-sm text-muted-foreground">
-                                        {product.price} {product.currency} ·{" "}
-                                        {new Date(product.created_at).toLocaleDateString()}
+                        <Link href={`/product/${product.slug}`} key={product.id}>
+                            <div
+                                key={product.id}
+                                className="border rounded-md p-3 flex items-center justify-between"
+                            >
+                                <div className="flex items-center gap-3">
+                                    {product.product_images?.[0]?.url && (
+                                        <Image
+                                            height={200}
+                                            width={200}
+                                            src={product.product_images[0].url}
+                                            alt={product.title}
+                                            className="w-16 h-16 object-cover rounded"
+                                        />
+                                    )}
+                                    <div>
+                                        <div className="font-medium">{product.title}</div>
+                                        <div className="text-sm text-muted-foreground">
+                                            {product.price} {product.currency} ·{" "}
+                                            {new Date(product.created_at).toLocaleDateString()}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="flex gap-2">
-                                <Link href={`/account/products/${product.slug}/edit`}>
-                                    <Button variant="secondary">Éditer</Button>
-                                </Link>
+                                <div className="flex gap-2">
+                                    <Link href={`/account/products/${product.slug}/edit`}>
+                                        <Button variant="secondary">Éditer</Button>
+                                    </Link>
 
-                                <DeleteProductModal
-                                    productId={product.id}
-                                    productTitle={product.title}
-                                    trigger={
-                                        <Button variant="destructive">
-                                            Supprimer
-                                        </Button>
-                                    }
-$$                                  onDeleted={() => router.refresh()}
-                                    userId={userId}
-                                />
+                                    <DeleteProductModal
+                                        productId={product.id}
+                                        productTitle={product.title}
+                                        trigger={
+                                            <Button variant="destructive">
+                                                Supprimer
+                                            </Button>
+                                        }
+                                        onDeleted={() => router.refresh()}
+                                        userId={userId}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        </Link>
+
                     ))}
                 </div>
             </CardContent>

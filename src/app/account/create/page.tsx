@@ -1,21 +1,46 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
 import { useCreateProduct } from "@/mutations/products/useProduct";
 import { useCategories } from "@/queries/useCatalog";
 import { useToast } from "@/components/ui/Toast";
 import { ToastType } from "@/components/ui/Toast/types";
 import ProductForm, { ProductFormValues } from "@/components/product/ProductForm";
+import {User} from "@/types/user";
 
 export default function NewProductPage() {
     const router = useRouter();
     const createProduct = useCreateProduct();
     const { data: categories = [] } = useCategories();
     const { openToast } = useToast();
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<User>();
+
+    useEffect(() => {
+        (async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                router.replace("/account");
+                return;
+            }
+            setUser(user);
+            setLoading(false);
+        })();
+    }, [router]);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-[50vh]">
+                <p className="text-muted-foreground">Chargement…</p>
+            </div>
+        );
+    }
 
     const initialValues: ProductFormValues = {
         title: "", description: "", price: 0, currency: "EUR",
-        category_id: null, rarity: null, condition: "Bon", status: "paused", images: [],
+        category_id: 1, rarity: "EPIC", condition: "Bon", status: "paused", images: [],
     };
 
     return (

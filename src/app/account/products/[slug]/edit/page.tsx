@@ -21,21 +21,20 @@ export default function EditProductPage() {
     const { openToast } = useToast();
 
     if (isLoading || !product) return <div className="p-6">Chargement…</div>;
-    console.log(product)
-
 
     const initialValues: ProductFormValues = {
         title: product.title,
         description: product.description ?? "",
         price: product.price,
         currency: product.currency,
-        category_id: product.category_id ?? null,
-        rarity: product.rarity ?? null,
+        category_id: product.category_id,
+        rarity: product.rarity,
         condition: product.condition,
         status: product.status,
         images: [],
     };
 
+    console.log(initialValues);
     return (
         <div className="container mx-auto px-4 py-8 max-w-2xl">
             <h1 className="text-2xl font-bold mb-6">Éditer l’annonce</h1>

@@ -8,9 +8,10 @@ import Link from "next/link";
 import type { ProductDetail, ProductRarity} from "@/types/products";
 
 const rarityColors: Record<NonNullable<ProductRarity>, string> = {
-    rare: "bg-accent text-accent-foreground electric-glow",
-    epic: "bg-secondary text-secondary-foreground cyber-glow",
-    legendary: "bg-primary text-primary-foreground pulse-rainbow",
+    RARE: "bg-accent text-accent-foreground electric-glow",
+    EPIC: "bg-secondary text-secondary-foreground cyber-glow",
+    LEGENDARY: "bg-primary text-primary-foreground pulse-rainbow",
+    COMMON: "bg-accent text-accent-foreground cyber-glow",
 };
 
 type Props = ProductDetail;

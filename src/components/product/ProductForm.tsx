@@ -11,8 +11,8 @@ export type ProductFormValues = {
     description?: string;
     price: number;
     currency: string;
-    category_id: number | null;
-    rarity: ProductRarity | null;
+    category_id: number;
+    rarity: ProductRarity;
     condition: ProductCondition;
     status: ProductStatus;
     images: File[];
@@ -31,8 +31,8 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
     const [description, setDescription] = useState(initialValues.description ?? "");
     const [price, setPrice] = useState(String(initialValues.price ?? ""));
     const [currency, setCurrency] = useState(initialValues.currency ?? "EUR");
-    const [categoryId, setCategoryId] = useState<number | undefined>(initialValues.category_id ?? undefined);
-    const [rarity, setRarity] = useState<ProductRarity | undefined>(initialValues.rarity ?? undefined);
+    const [categoryId, setCategoryId] = useState<number>(initialValues.category_id);
+    const [rarity, setRarity] = useState<ProductRarity>(initialValues.rarity);
     const [condition, setCondition] = useState<ProductCondition>(initialValues.condition);
     const [status, setStatus] = useState<ProductStatus>(initialValues.status);
     const [images, setImages] = useState<FileList | null>(null);
@@ -52,8 +52,8 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
             description,
             price: priceNum,
             currency,
-            category_id: categoryId ?? null,
-            rarity: rarity ?? null,
+            category_id: categoryId,
+            rarity: rarity,
             condition,
             status,
             images: images ? Array.from(images) : [],
@@ -133,7 +133,7 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
                     id="rarity"
                     className="w-full border rounded px-3 py-2 bg-background"
                     value={rarity ?? ""}
-                    onChange={(e) => setRarity((e.target.value || undefined) as ProductRarity | undefined)}
+                    onChange={(e) => setRarity((e.target.value) as ProductRarity)}
                 >
                     {PRODUCT_RARITIES.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>

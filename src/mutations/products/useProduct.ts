@@ -1,22 +1,7 @@
 "use client";
-
-// src/hooks/useCreateProduct.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabaseClient";
-import { z } from "zod";
-
-/**
- * Typages UI alignés avec ta DB actuelle (d’après ton screenshot) :
- * - currency / condition / status / category_id : text → string
- * - rarity : enum → "common" | "rare" | "epic" | "legendary"
- */
-export const PRODUCT_CONDITIONS = ["Mint", "Très bon", "Bon", "Correct"] as const;
-export const PRODUCT_STATUSES = ["active", "sold", "paused", "deleted"] as const;
-export const PRODUCT_RARITIES = ["common", "rare", "epic", "legendary"] as const;
-
-export type ProductCondition = (typeof PRODUCT_CONDITIONS)[number];
-export type ProductStatus = (typeof PRODUCT_STATUSES)[number];
-export type ProductRarity = (typeof PRODUCT_RARITIES)[number];
+import {ProductCondition, ProductRarity, ProductStatus} from "@/types/products";
 
 export type NewProductInput = {
     title: string;
@@ -24,8 +9,8 @@ export type NewProductInput = {
     price: number;
     currency: string;
     condition: ProductCondition;
-    category_id?: number | null; // text dans ta DB
-    rarity?: ProductRarity | null;
+    category_id: number;
+    rarity: ProductRarity;
     status: ProductStatus;
     images?: File[];
     seller_id?: string;
@@ -63,8 +48,8 @@ export function useCreateProduct() {
                     price: p.price,
                     currency: p.currency,
                     condition: p.condition,
-                    category_id: p.category_id ?? null,
-                    rarity: p.rarity ?? null,
+                    category_id: p.category_id,
+                    rarity: p.rarity,
                     status: p.status,
                 })
                 .select("*")

@@ -1,19 +1,20 @@
 "use client"
 
 import { useState } from "react";
-import { Heart, Share2, Star, Shield, Truck, RotateCcw } from "lucide-react";
+import { Star } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import {ProductDetailWithSeller} from "@/types/products";
 import Image from "next/image";
+import {AddToCartButton} from "@/components/AddToCartButton";
 
 type Props = {
     product: ProductDetailWithSeller;
 }
 
 const ProductDetail = ({product} : Props) => {
-    const [isFavorite, setIsFavorite] = useState<boolean>(false);
+    // const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const [selectedImage, setSelectedImage] = useState<number>(0);
 
     return (
@@ -30,17 +31,17 @@ const ProductDetail = ({product} : Props) => {
                                 height={800}
                                 className="w-full h-96 object-cover rounded-lg shadow-card"
                             />
-                            {/* Favorite Button */}
-                            <button
-                                onClick={() => setIsFavorite(!isFavorite)}
-                                className={`absolute top-4 right-4 p-3 rounded-full backdrop-blur-sm transition-colors ${
-                                    isFavorite
-                                        ? "bg-red-500 text-white"
-                                        : "bg-white/80 text-gray-700 hover:bg-white"
-                                }`}
-                            >
-                                <Heart className={`w-5 h-5 ${isFavorite ? "fill-current" : ""}`} />
-                            </button>
+                            {/*/!* Favorite Button *!/*/}
+                            {/*<button*/}
+                            {/*    onClick={() => setIsFavorite(!isFavorite)}*/}
+                            {/*    className={`absolute top-4 right-4 p-3 rounded-full backdrop-blur-sm transition-colors ${*/}
+                            {/*        isFavorite*/}
+                            {/*            ? "bg-red-500 text-white"*/}
+                            {/*            : "bg-white/80 text-gray-700 hover:bg-white"*/}
+                            {/*    }`}*/}
+                            {/*>*/}
+                            {/*    <Heart className={`w-5 h-5 ${isFavorite ? "fill-current" : ""}`} />*/}
+                            {/*</button>*/}
                             {/* Rarity Badge */}
                             <Badge className="absolute top-4 left-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0">
                                 {product.rarity}
@@ -73,17 +74,17 @@ const ProductDetail = ({product} : Props) => {
 
                     {/* Product Info Section */}
                     <div>
-                        <div className="flex items-start justify-between mb-4">
-                            <h1 className="text-3xl font-bold text-foreground">{product.title}</h1>
-                            <Button variant="ghost" size="sm">
-                                <Share2 className="w-4 h-4" />
-                            </Button>
-                        </div>
+                        {/*<div className="flex items-start justify-between mb-4">*/}
+                        {/*    <h1 className="text-3xl font-bold text-foreground">{product.title}</h1>*/}
+                        {/*    <Button variant="ghost" size="sm">*/}
+                        {/*        <Share2 className="w-4 h-4"/>*/}
+                        {/*    </Button>*/}
+                        {/*</div>*/}
 
                         <div className="flex items-center space-x-4 mb-6">
                             <Badge variant="outline">{product.condition}</Badge>
                             <div className="flex items-center space-x-1">
-                                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                                <Star className="w-4 h-4 fill-amber-400 text-amber-400"/>
                             </div>
                         </div>
 
@@ -96,30 +97,11 @@ const ProductDetail = ({product} : Props) => {
                             <h3 className="font-semibold mb-2">Vendu par {product.seller?.display_name}</h3>
                             <div className="flex items-center justify-between text-sm text-muted-foreground">
                                 <div className="flex items-center space-x-1">
-                                    <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                                    <Star className="w-4 h-4 fill-amber-400 text-amber-400"/>
                                 </div>
                             </div>
                         </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <Button variant="hero" size="lg" className="w-full">
-                                    Ajouter au panier
-                                </Button>
-                            </div>
-
-                        {/* Trust Badges */}
-                        <div className="grid grid-cols-3 gap-4 mb-8">
-                            <div className="text-center">
-                                <Shield className="w-6 h-6 text-green-500 mx-auto mb-2" />
-                                <p className="text-xs text-muted-foreground">Paiement sécurisé</p>
-                            </div>
-                            <div className="text-center">
-                                <Truck className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                            </div>
-                            <div className="text-center">
-                                <RotateCcw className="w-6 h-6 text-purple-500 mx-auto mb-2" />
-                                <p className="text-xs text-muted-foreground">Retours 14j</p>
-                            </div>
-                        </div>
+                        <AddToCartButton productId={product.id} />
                     </div>
                 </div>
 
