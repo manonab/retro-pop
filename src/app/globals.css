@@ -3,106 +3,46 @@
 /* ========= VHS PRINT — palette harmonisée ========= */
 @layer base {
   :root {
-    /* Light — jaquette crème */
-    --background: 40 30% 96%;   /* crème sobre (moins jaune) */
-    --foreground: 0 0% 12%;     /* encre noire douce */
+    /* surfaces */
+    --background: 39 47% 94%;    /* Cream Label */
+    --foreground: 0 0% 10%;
+    --card: 39 42% 96%;
+    --card-foreground: 0 0% 10%;
+    --muted: 39 24% 90%;
+    --muted-foreground: 0 0% 40%;
+    --border: 39 18% 82%;
+    --input: 39 18% 88%;
 
-    --card: 40 25% 98%;
-    --card-foreground: 0 0% 14%;
-    --popover: 40 25% 98%;
-    --popover-foreground: 0 0% 14%;
-
-    /* Couleurs clés (saturation réduite) */
-    --primary: 36 80% 52%;      /* SAFRAN – CTA */
-    --primary-hover: 36 80% 46%;
+    /* DUSK accents */
+    --primary: 340 83% 66%;      /* Dusk Pink */
+    --primary-hover: 340 83% 58%;
     --primary-foreground: 0 0% 100%;
 
-    --accent: 14 72% 48%;       /* VERMILLON – accents forts */
+    --secondary: 281 54% 36%;    /* Retro Purple */
+    --secondary-foreground: 0 0% 98%;
+
+    --accent: 19 100% 62%;       /* Sunset Orange (à doser) */
     --accent-foreground: 0 0% 100%;
 
-    --secondary: 268 48% 46%;   /* VIOLET – alternatif */
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 40 14% 88%;
-    --muted-foreground: 0 0% 42%;
-    --destructive: 0 68% 46%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 40 12% 82%;
-    --input: 40 12% 88%;
-    --ring: 268 48% 50%;
-
-    /* Teintes “print” (pour bandes) */
-    --print-saffron: 36 80% 52%;
-    --print-vermilion: 14 72% 48%;
-    --print-magenta: 326 62% 48%;
-    --print-violet: 268 48% 46%;
-
-    /* Bandes (pas de vert/bleu) */
-    --vhs-band-tri: linear-gradient(135deg,
-    hsl(var(--print-vermilion)) 0% 33%,
-    hsl(var(--print-saffron)) 33% 66%,
-    hsl(var(--print-magenta)) 66% 100%
-    );
-    /* Liseré violet fin à appliquer en overlay si besoin */
-    --vhs-edge-violet: linear-gradient(90deg,
-    hsl(var(--print-violet)) 0 6px, transparent 6px);
-
-    /* Hero “sunset print” (vertical) */
-    --tape-sunset: linear-gradient(180deg,
-    hsl(var(--print-saffron)) 0%,
-    hsl(var(--print-vermilion)) 35%,
-    hsl(var(--print-magenta)) 70%,
-    hsl(var(--print-violet)) 100%
-    );
-
-    /* Ombres / radius */
-    --shadow-soft: 0 6px 22px -8px hsl(0 0% 0% / .12);
-    --shadow-card: 0 10px 28px -12px hsl(0 0% 0% / .16);
-    --shadow-warm: 0 14px 32px -12px hsl(36 80% 52% / .22);
+    --ring: 281 54% 36%;
     --radius: 12px;
   }
 
   .dark {
-    /* Dark — charcoal bleuté */
-    --background: 230 16% 10%;
+    --background: 252 19% 5%;    /* VHS Black */
     --foreground: 0 0% 96%;
-
-    --card: 230 12% 13%;
+    --card: 273 34% 14%;         /* Deep Purple */
     --card-foreground: 0 0% 96%;
-    --popover: 230 12% 13%;
-    --popover-foreground: 0 0% 96%;
-
-    --primary: 36 84% 58%;
-    --primary-hover: 36 84% 52%;
-    --primary-foreground: 0 0% 8%;
-
-    --accent: 14 76% 54%;
-    --accent-foreground: 0 0% 8%;
-
-    --secondary: 268 50% 52%;
-    --secondary-foreground: 0 0% 8%;
-
-    --muted: 230 10% 20%;
-    --muted-foreground: 0 0% 72%;
-    --destructive: 0 72% 54%;
-    --destructive-foreground: 0 0% 8%;
-
-    --border: 230 10% 24%;
-    --input: 230 10% 22%;
-    --ring: 268 50% 54%;
-
-    /* Grille fine en option (comme tes covers) */
-    --grid-line: 230 7% 28%;
-    --vhs-grid:
-            linear-gradient(to right, hsl(var(--grid-line)) 1px, transparent 1px),
-            linear-gradient(to bottom, hsl(var(--grid-line)) 1px, transparent 1px),
-            linear-gradient(hsl(var(--background)), hsl(var(--background)));
+    --muted: 273 26% 18%;
+    --muted-foreground: 0 0% 78%;
+    --border: 273 22% 24%;
+    --input: 273 22% 22%;
+    --primary: 340 83% 66%;
+    --primary-hover: 340 83% 58%;
+    --secondary: 281 54% 46%;
+    --accent: 19 100% 62%;
+    --ring: 281 54% 46%;
   }
-
-  /* mapping base */
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; }
 }
 
 /* ========= @theme (Tailwind v4) ========= */
@@ -150,11 +90,49 @@
 
 /* ========= helpers ========= */
 @layer utilities {
-  .vhs-tri { background-image: var(--background-image-vhs-tri); }
-  .tape-sunset { background-image: var(--background-image-tape-sunset); }
-  .vhs-grid { background-image: var(--background-image-vhs-grid); background-size: var(--background-size-vhs-grid); }
-  .vhs-edge { background-image: var(--background-image-vhs-edge); background-repeat: no-repeat; background-size: 6px 100%; }
+  /* dégradé signature (violet → rose → sunset) */
+  .gradient-dusk {
+    background-image: linear-gradient(90deg,
+    hsl(281 54% 36%) 0%,
+    hsl(340 83% 66%) 55%,
+    hsl(19 100% 62%) 100%);
+  }
 
-  .electric-glow { box-shadow: 0 0 6px hsl(36 80% 52% / .65), 0 0 14px hsl(14 72% 48% / .45); }
-  .cyber-glow { box-shadow: 0 0 6px hsl(326 62% 52% / .65), 0 0 14px hsl(268 48% 46% / .45); }
+  /* texte dégradé pour titres/prix */
+  .text-dusk {
+    background: linear-gradient(90deg,
+    hsl(281 54% 36%) 0%,
+    hsl(340 83% 66%) 55%,
+    hsl(19 100% 62%) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  /* bandes horizontales façon jaquette */
+  .stripes-dusk {
+    background:
+            linear-gradient(to right, hsl(204 71% 58%) 0 100%), /* Blue bar */
+            repeating-linear-gradient(to bottom,
+            hsl(340 83% 66%) 0 10px,
+            hsl(327 70% 54%) 10px 20px,
+            hsl(19 100% 62%) 20px 30px,
+            hsl(38 100% 68%) 30px 40px,
+            hsl(327 70% 54%) 40px 50px);
+    background-size: 100% 8px, 100% calc(100% - 8px);
+    background-position: top, bottom;
+    background-repeat: no-repeat;
+  }
+
+  /* sticker dégradé mat (moins flashy) */
+  .sticker-vhs {
+    background-image: linear-gradient(90deg,
+    hsl(281 54% 36%) 0%,
+    hsl(340 83% 66%) 100%);
+    color: white;
+    box-shadow: 0 8px 20px -10px hsl(281 54% 24%/.35);
+  }
+  .sticker-gloss::after {
+    content:""; position:absolute; inset:0; border-radius:inherit;
+    background: linear-gradient(to bottom right, #fff3 0%, transparent 45% 100%);
+    pointer-events:none;
+  }
 }

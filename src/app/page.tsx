@@ -1,5 +1,5 @@
 import Hero from "@/components/Hero";
-import CategoryGrid from "@/components/catalog/CatalogGrid";
+import { CategoryGrid } from "@/components/catalog/CatalogGrid";
 
 export default function Home() {
   return (

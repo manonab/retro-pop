@@ -1,148 +1,223 @@
-"use client"
+"use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
-import {ProductDetailWithSeller} from "@/types/products";
+import type { ProductDetailWithSeller } from "@/types/products";
 import Image from "next/image";
-import {AddToCartButton} from "@/components/AddToCartButton";
+import { AddToCartButton } from "@/components/AddToCartButton";
 
-type Props = {
-    product: ProductDetailWithSeller;
-}
+type Props = { product: ProductDetailWithSeller };
 
-const ProductDetail = ({product} : Props) => {
-    // const [isFavorite, setIsFavorite] = useState<boolean>(false);
+const ProductDetail = ({ product }: Props) => {
     const [selectedImage, setSelectedImage] = useState<number>(0);
+
+    const images = useMemo(
+        () =>
+            (product.product_images ?? [])
+                .slice()
+                .sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0)),
+        [product.product_images]
+    );
+
+    const cover = images[selectedImage]?.url;
+
+    const isConditionObject =
+        product && typeof product.condition === "object" && product.condition !== null;
 
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-                    {/* Images Section */}
-                    <div>
+                {/* ==== Top layout ==== */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-12">
+                    {/* Left — Gallery */}
+                    <div className="lg:col-span-7">
                         <div className="relative mb-4">
-                            <Image
-                                src={product.product_images[selectedImage].url}
-                                alt={product.title}
-                                width={800}
-                                height={800}
-                                className="w-full h-96 object-cover rounded-lg shadow-card"
-                            />
-                            {/*/!* Favorite Button *!/*/}
-                            {/*<button*/}
-                            {/*    onClick={() => setIsFavorite(!isFavorite)}*/}
-                            {/*    className={`absolute top-4 right-4 p-3 rounded-full backdrop-blur-sm transition-colors ${*/}
-                            {/*        isFavorite*/}
-                            {/*            ? "bg-red-500 text-white"*/}
-                            {/*            : "bg-white/80 text-gray-700 hover:bg-white"*/}
-                            {/*    }`}*/}
-                            {/*>*/}
-                            {/*    <Heart className={`w-5 h-5 ${isFavorite ? "fill-current" : ""}`} />*/}
-                            {/*</button>*/}
-                            {/* Rarity Badge */}
-                            <Badge className="absolute top-4 left-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0">
-                                {product.rarity}
-                            </Badge>
-                        </div>
-
-                        {/* Image Thumbnails */}
-                        <div className="flex space-x-2">
-                            {product.product_images.map((image, index) => (
-                                <Button
-                                    key={index}
-                                    onClick={() => setSelectedImage(index)}
-                                    className={`w-20 h-20 rounded-lg border-2 transition-colors ${
-                                        selectedImage === index
-                                            ? "border-primary"
-                                            : "border-border hover:border-primary/50"
-                                    }`}
-                                >
+                            <div className="relative w-full h-[420px] md:h-[520px] overflow-hidden rounded-2xl tape-window bevel-card">
+                                {cover && (
                                     <Image
-                                        src={image.url}
-                                        width={800}
-                                        height={800}
-                                        alt={`${product.title} - Vue ${index + 1}`}
-                                        className="w-full h-full object-cover rounded-md"
+                                        src={cover}
+                                        alt={product.title}
+                                        fill
+                                        className="object-cover"
+                                        priority
                                     />
-                                </Button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Product Info Section */}
-                    <div>
-                        {/*<div className="flex items-start justify-between mb-4">*/}
-                        {/*    <h1 className="text-3xl font-bold text-foreground">{product.title}</h1>*/}
-                        {/*    <Button variant="ghost" size="sm">*/}
-                        {/*        <Share2 className="w-4 h-4"/>*/}
-                        {/*    </Button>*/}
-                        {/*</div>*/}
-
-                        <div className="flex items-center space-x-4 mb-6">
-                            <Badge variant="outline">{product.condition}</Badge>
-                            <div className="flex items-center space-x-1">
-                                <Star className="w-4 h-4 fill-amber-400 text-amber-400"/>
+                                )}
+                                {/* VHS overlays */}
+                                <div className="absolute inset-0 scanlines opacity-30 pointer-events-none" />
+                                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/70 to-transparent" />
+                                {/* Rarity badge */}
+                                {!!product.rarity && (
+                                    <Badge className="absolute top-4 left-4 border-0 bg-secondary text-secondary-foreground">
+                                        {product.rarity}
+                                    </Badge>
+                                )}
                             </div>
                         </div>
 
-                        <div className="flex items-center space-x-4 mb-8">
-                            <span className="text-4xl font-bold text-primary">{product.price}€</span>
-                        </div>
+                        {/* Thumbnails */}
+                        {images.length > 1 && (
+                            <div className="flex flex-wrap gap-3">
+                                {images.map((img, i) => (
+                                    <button
+                                        key={img.id ?? i}
+                                        onClick={() => setSelectedImage(i)}
+                                        className={`relative w-20 h-20 rounded-xl overflow-hidden border transition-all ${
+                                            selectedImage === i
+                                                ? "border-primary ring-2 ring-primary/30"
+                                                : "border-border hover:border-primary/50"
+                                        }`}
+                                        aria-label={`Voir l’image ${i + 1}`}
+                                    >
+                                        <Image
+                                            src={img.url}
+                                            alt={`${product.title} — ${i + 1}`}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
-                        {/* Seller Info */}
-                        <div className="bg-card p-4 rounded-lg border border-border mb-6">
-                            <h3 className="font-semibold mb-2">Vendu par {product.seller?.display_name}</h3>
-                            <div className="flex items-center justify-between text-sm text-muted-foreground">
-                                <div className="flex items-center space-x-1">
-                                    <Star className="w-4 h-4 fill-amber-400 text-amber-400"/>
+                    {/* Right — Info / Buy box */}
+                    <aside className="lg:col-span-5">
+                        <div className="lg:sticky lg:top-24 space-y-4">
+                            <h1 className="text-2xl md:text-3xl font-extrabold leading-tight">
+                                {product.title}
+                            </h1>
+
+                            {/* Condition + mini rating */}
+                            <div className="flex flex-wrap items-center gap-2">
+                                {isConditionObject ? (
+                                    <Badge variant="outline">État: Voir détails</Badge>
+                                ) : (
+                                    !!product.condition && <Badge variant="outline">{product.condition}</Badge>
+                                )}
+                                <div className="flex items-center gap-1 text-amber-500">
+                                    <Star className="w-4 h-4 fill-current"/>
+                                    <span className="text-sm">Qualité vérifiée</span>
                                 </div>
                             </div>
+
+                            {/* Price & CTA */}
+                            <div className="label-paper vhs-notch rounded-xl p-5 bevel-card">
+                                <div className="flex items-end justify-between gap-4">
+                                    <div>
+                                        <div className="flex items-center gap-3">
+                                            <div
+                                                className="relative sticker sticker-vhs sticker-gloss px-4 py-2 text-white text-xl font-extrabold">
+                                                {product.price}€
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <AddToCartButton productId={product.id}/>
+                                </div>
+                                <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-muted-foreground">
+                                    <div>✅ Paiement sécurisé</div>
+                                    <div>📦 Colis suivi</div>
+                                </div>
+                            </div>
+
+                            {/* Seller card */}
+                            <div className="bg-card border border-border rounded-xl p-4 bevel-card">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <div className="text-xs text-muted-foreground">Vendu par</div>
+                                        <div className="font-semibold">
+                                            {product.seller?.display_name ?? "Vendeur"}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-1 text-amber-500">
+                                        <Star className="w-4 h-4 fill-current"/>
+                                        <span className="text-sm">Fiable</span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                        <AddToCartButton productId={product.id} />
-                    </div>
+                    </aside>
                 </div>
 
-                {/* Product Details Tabs */}
+                {/* ==== Tabs (description / specs / livraison) ==== */}
                 <Tabs defaultValue="description" className="mb-16">
-                    <TabsList className="grid w-full grid-cols-3">
-                        <TabsTrigger value="description">Description</TabsTrigger>
-                        <TabsTrigger value="specifications">Caractéristiques</TabsTrigger>
-                        <TabsTrigger value="shipping">Livraison</TabsTrigger>
+                    <TabsList className="grid w-full grid-cols-3 rounded-xl overflow-hidden">
+                        <TabsTrigger value="description"
+                                     className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">
+                            Description
+                        </TabsTrigger>
+                        <TabsTrigger value="specs" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">
+                            Caractéristiques
+                        </TabsTrigger>
+                        <TabsTrigger value="shipping" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">
+                            Livraison
+                        </TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="description" className="mt-6">
                         <div className="prose prose-neutral max-w-none">
                             <div className="whitespace-pre-line text-foreground">
-                                {product.description}
+                                {product.description || "—"}
                             </div>
                         </div>
                     </TabsContent>
 
-                    <TabsContent value="specifications" className="mt-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {Object.entries(product.condition).map(([key, value]) => (
-                                <div key={key} className="flex justify-between p-3 bg-card rounded-lg">
-                                    <span className="font-medium text-foreground">{key}</span>
-                                    <span className="text-muted-foreground">{value}</span>
-                                </div>
-                            ))}
-                        </div>
+                    <TabsContent value="specs" className="mt-6">
+                        {isConditionObject ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                {Object.entries(product.condition).map(([key, value]) => (
+                                    <div
+                                        key={key}
+                                        className="flex items-center justify-between px-3 py-2 bg-card rounded-lg border border-border"
+                                    >
+                                        <span className="font-medium text-foreground">{key}</span>
+                                        <span className="text-muted-foreground">{String(value)}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-muted-foreground">Pas de caractéristiques détaillées.</div>
+                        )}
                     </TabsContent>
 
+                    <TabsContent value="shipping" className="mt-6">
+                        <div className="grid sm:grid-cols-3 gap-3">
+                            <div className="bg-card border border-border rounded-lg p-3">
+                                <div className="text-xs text-muted-foreground">Préparation</div>
+                                <div className="font-medium">48h</div>
+                            </div>
+                            <div className="bg-card border border-border rounded-lg p-3">
+                                <div className="text-xs text-muted-foreground">Transport</div>
+                                <div className="font-medium">Colis suivi</div>
+                            </div>
+                            <div className="bg-card border border-border rounded-lg p-3">
+                                <div className="text-xs text-muted-foreground">Retours</div>
+                                <div className="font-medium">14 jours</div>
+                            </div>
+                        </div>
+                    </TabsContent>
                 </Tabs>
 
-                {/* Similar Products */}
-{/*                <section>
-                    <h2 className="text-2xl font-bold text-foreground mb-8">Produits similaires</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {similarProducts.map((product) => (
-                            <ProductCard key={product.id} {...product} />
-                        ))}
+                {/* ==== Trust bar ==== */}
+                <section className="border-t border-border pt-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center text-muted-foreground">
+                        <div>
+                            <div className="text-foreground font-semibold">Paiements sécurisés</div>
+                            <div className="text-sm">CB, Visa, Mastercard</div>
+                        </div>
+                        <div>
+                            <div className="text-foreground font-semibold">Livraison soignée</div>
+                            <div className="text-sm">Emballages renforcés</div>
+                        </div>
+                        <div>
+                            <div className="text-foreground font-semibold">Communauté passionnée</div>
+                            <div className="text-sm">Acheteurs & vendeurs vérifiés</div>
+                        </div>
                     </div>
-                </section>*/}
+                </section>
             </div>
         </div>
     );

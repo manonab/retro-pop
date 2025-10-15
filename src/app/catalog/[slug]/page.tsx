@@ -19,6 +19,6 @@ export default async function CategoryPage({
                                            }: {
     params: Promise<{ slug: string }>;
 }) {
-    const { slug } = await params;        // 👈 important
+    const { slug } = await params;
     return <CatalogPageClient slug={slug} />;
 }
