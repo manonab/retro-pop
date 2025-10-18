@@ -120,7 +120,7 @@ export function CategoryGrid() {
                       >
                         Voir la catégorie →
                       </span>
-                                        d </div>
+                                        </div>
                                     </div>
                                     <div
                                         aria-hidden
