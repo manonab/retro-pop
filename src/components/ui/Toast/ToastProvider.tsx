@@ -22,7 +22,7 @@ export function AppToastProvider({ children }: PropsWithChildren) {
 
     const toastNodes = (
         <>
-            {Children.toArray(toasts.map(t => <Toast onClose={closeToast} {...t} />))}
+            {Children.toArray(toasts.map(t => <Toast onCloseAction={closeToast} {...t} />))}
 
         </>
     );

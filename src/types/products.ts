@@ -7,13 +7,13 @@ export type ProductStatus    = typeof PRODUCT_STATUSES[number];
 export type ProductRarity    = typeof PRODUCT_RARITIES[number];
 
 export type CategoryLite = {
-    id: string;
-    name: string;
-    slug: string;
-    icon_key: string;
-    image_url: string;
-    banner_url: string;
-    gradient: string;
+    banner_url: string | null
+    gradient: string | null
+    icon_key: string | null
+    id: number
+    image_url: string | null
+    name: string
+    slug: string
 };
 
 export type SellerLite = {
@@ -28,14 +28,6 @@ export type ProductImage = {
     product_id: string;
     url: string;
     position: number;
-};
-
-export type Profiles = {
-    user_id: string;
-    display_name: string;
-    avatar_url: string;
-    is_pro: boolean;
-    created_at: string;
 };
 
 export type ProductBase = {
@@ -62,19 +54,6 @@ export type ProductDetail = ProductBase & {
 
 export type ProductDetailWithSeller = ProductDetail & { seller: SellerLite | null };
 
-export type NewProductInput = {
-    seller_id: string;
-    title: string;
-    slug: string | null;
-    description?: string | null;
-    price: number;
-    currency: string;
-    condition: ProductCondition;
-    category_id: number | null;
-    rarity: ProductRarity;
-    status: ProductStatus;
-};
-
 export type EditProductInput = {
     id: string;
     title?: string;
@@ -82,9 +61,16 @@ export type EditProductInput = {
     price?: number;
     currency?: string;
     condition?: ProductCondition;
-    category_id?: number | null;
+    category_id?: number;
     rarity?: ProductRarity;
     status?: ProductStatus;
     newImages?: File[];
     deletedImageIds?: string[];
 };
+
+export type CartItems = {
+    cart_id: string
+    created_at: string
+    id: string
+    product_id: string
+}

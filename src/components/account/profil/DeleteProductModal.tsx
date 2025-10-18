@@ -16,21 +16,15 @@ import { Button } from "@/components/ui/Button";
 import {ToastType, useToast} from "@/components/ui/Toast";
 
 type DeleteProductModalProps = {
+    invalidateKeys?: (string | unknown[])[];
     productId: string;
     productTitle?: string;
     trigger: React.ReactElement;
-    onDeleted?: () => void;
-    invalidateKeys?: (string | unknown[])[];
     userId: string;
+    onDeletedAction?: () => Promise<void>;
 };
 
-export default function DeleteProductModal({
-                                               productId,
-                                               productTitle,
-                                               trigger,
-                                               onDeleted,
-                                               userId
-                                           }: DeleteProductModalProps) {
+export default function DeleteProductModal({ productId, productTitle, trigger, onDeletedAction, userId }: DeleteProductModalProps) {
     const [open, setOpen] = React.useState(false);
     const [confirming, setConfirming] = React.useState(false);
     const { openToast } = useToast();
@@ -51,9 +45,9 @@ export default function DeleteProductModal({
             });
             setOpen(false);
             setConfirming(false);
-            onDeleted?.();
+            onDeletedAction?.();
         },
-        onError: (err: any) => {
+        onError: (err: Error) => {
             openToast({
                 type: ToastType.ERROR,
                 description: <>Erreur de suppression : {err.message}</>,

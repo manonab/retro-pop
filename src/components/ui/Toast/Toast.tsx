@@ -45,14 +45,14 @@ type Props = {
     type: ToastType;
     description: ReactNode;
     isOpen: boolean;
-    onClose: (id: string) => void;
+    onCloseAction: (id: string) => void;
     duration?: number;
 };
 
-export function Toast({id, type, description, isOpen, onClose, duration = TOAST_DURATION }: Props) {
+export function Toast({id, type, description, isOpen, onCloseAction, duration = TOAST_DURATION }: Props) {
     const { bg, text, close, Icon } = STYLE[type];
 
-    const content: JSX.Element = <>{Children.toArray(description as any)}</>;
+    const content: JSX.Element = <>{Children.toArray(description)}</>;
 
     return (
         <RadixToast.Root
@@ -63,7 +63,7 @@ export function Toast({id, type, description, isOpen, onClose, duration = TOAST_
         data-[state=closed]:animate-hide data-[state=open]:animate-slideIn
         data-[swipe=end]:animate-swipeOut data-[swipe=cancel]:transition-[transform_200ms_ease-out]`}
             open={isOpen}
-            onOpenChange={(open) => { if (!open) onClose(id); }}
+            onOpenChange={(open) => { if (!open) onCloseAction(id); }}
             duration={duration}
             data-testid="toast"
         >

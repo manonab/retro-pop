@@ -48,7 +48,7 @@ export default function Auth() {
                 Se connecter
             </Button>
             <Button onClick={handleSignup} disabled={loading}>
-                S'inscrire
+                S&aposinscrire
             </Button>
         </form>
     );

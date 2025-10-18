@@ -16,7 +16,7 @@ const ProductDetail = ({ product }: Props) => {
         () =>
             (product.product_images ?? [])
                 .slice()
-                .sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0)),
+                .sort((a, b) => (a.position ?? 0) - (b.position ?? 0)),
         [product.product_images]
     );
 

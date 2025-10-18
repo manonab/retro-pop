@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { CATEGORY_ICON_MAP } from "@/lib/services/catalog";
-import {CategoryLite} from "@/types/products";
+import { CategoryLite } from "@/types/products";
 
 export default function CategoryHeroVHS({ category, total }: { category: CategoryLite; total: number; }) {
     const Icon =

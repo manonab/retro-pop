@@ -2,22 +2,18 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Heart, Bookmark } from "lucide-react";
 import type { ProductDetailWithSeller } from "@/types/products";
 
 type Props = {
     p: ProductDetailWithSeller;
     cover?: string | null;
-    onFavToggle?: (id: string) => void; // optionnel
 };
 
-export default function ProductCardVHS({ p, cover, onFavToggle }: Props) {
+export default function ProductCardVHS({ p, cover }: Props) {
     const slug = p.slug ?? p.id;
 
-    // mapping état -> classe CSS
     const CONDITION_STYLE: Record<string, string> = {
-        mint: "badge-condition-mint",
-        "très bon": "badge-condition-verygood",
+        mint: "badge-condition-mint", "très bon": "badge-condition-verygood",
         correct: "badge-condition-correct",
         collector: "badge-condition-collector",
     };

@@ -68,7 +68,7 @@ export default function MyListings({ userId }: { userId: string }) {
                                                 Supprimer
                                             </Button>
                                         }
-                                        onDeleted={() => router.refresh()}
+                                        onDeletedAction={async () => router.refresh()}
                                         userId={userId}
                                     />
                                 </div>

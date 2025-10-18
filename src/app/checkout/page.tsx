@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabaseClient";
 import { useCart } from "@/stores/useCart";
 import { Button } from "@/components/ui/Button";
+import {CartItems} from "@/types/products";
 
 type ProductRow = {
     id: string;
@@ -15,7 +16,7 @@ type ProductRow = {
     title: string;
     price: number | null;
     currency: string | null;
-    status?: string | null; // 'available' | 'reserved' | 'sold' (si tu l'as)
+    status?: string | null;
     product_images: { url: string | null; position: number | null }[] | null;
 };
 
@@ -23,7 +24,7 @@ async function requireUserOrRedirect(router: ReturnType<typeof useRouter>) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
         router.replace("/login?redirect=/checkout");
-        throw new Error("NO_AUTH"); // stop queries
+        throw new Error("NO_AUTH");
     }
     return user;
 }
@@ -46,13 +47,13 @@ async function getOrCreateCartId(userId: string): Promise<string> {
     return created.id as string;
 }
 
-async function fetchServerCartProductIds(cartId: string): Promise<string[]> {
+async function fetchServerCartProductIds(cartId: string): Promise<(string | undefined)[]> {
     const { data, error } = await supabase
         .from("cart_items")
         .select("product_id")
         .eq("cart_id", cartId);
     if (error) throw error;
-    return (data ?? []).map((r: any) => r.product_id as string);
+    return (data ?? []).map((r: Partial<CartItems>) => r.product_id);
 }
 
 async function fetchProductsByIds(ids: string[]): Promise<ProductRow[]> {
@@ -78,7 +79,6 @@ export default function CheckoutPage() {
     const syncToServer = useCart((s) => s.syncToServer);
     const [userId, setUserId] = useState<string | null>(null);
 
-    // 1) Auth + sync au mount
     useEffect(() => {
         (async () => {
             try {
@@ -91,7 +91,6 @@ export default function CheckoutPage() {
                 // mergeOnSync: true → fusionne serveur + local
                 await syncToServer({ mergeOnSync: true, clearLocalAfterSync: false });
             } catch {
-                /* noop */
             }
         })();
     }, [router, syncToServer]);
@@ -124,27 +123,33 @@ export default function CheckoutPage() {
     const isLoading =
         cartIdQuery.isLoading || productIdsQuery.isLoading || productsQuery.isLoading;
 
-    const products = productsQuery.data ?? [];
+    const products: ProductRow[] = useMemo(
+        () => productsQuery.data ?? [],
+        [productsQuery.data]
+    );
 
-    // Calculs
-    const currency = products[0]?.currency ?? "EUR";
-    const unavailable = products.filter((p) => p.status && p.status !== "available");
-    const subtotal = useMemo(() => {
-        return products.reduce((sum, p) => sum + (p.price ?? 0), 0);
-    }, [products]);
+    const currency = useMemo(
+        () => products[0]?.currency ?? "EUR",
+        [products]
+    );
 
-    const canPay = products.length > 0 && unavailable.length === 0;
+    const unavailable = useMemo(
+        () => products.filter((p) => p.status && p.status !== "available"),
+        [products]
+    );
+
+    const subtotal = useMemo(
+        () => products.reduce((sum, p) => sum + (p.price ?? 0), 0),
+        [products]
+    );
+
+    const canPay = useMemo(
+        () => products.length > 0 && unavailable.length === 0,
+        [products.length, unavailable.length]
+    );
 
     async function handleConfirm() {
-        // Ici tu confirmes la commande :
-        // - Version simple: rediriger vers page paiement Stripe (à intégrer)
-        // - Version SQL: appeler une RPC qui check la dispo ET réserve/vend en transaction
-        // Ex. (quand la RPC existera) :
-        // const { error } = await supabase.rpc("checkout_cart", { p_user: userId });
-        // if (error) { ... afficher erreur ... } else { router.push("/order/thanks") }
-
-        // Pour l’instant, on met juste une redirection “à brancher”
-        router.push("/payment"); // crée cette page ou remplace par ton flow Stripe
+        router.push("/payment");
     }
 
     return (
@@ -166,7 +171,6 @@ export default function CheckoutPage() {
 
             {!isLoading && products.length > 0 && (
                 <div className="mt-6 grid gap-6 lg:grid-cols-3">
-                    {/* Liste des articles */}
                     <div className="lg:col-span-2 space-y-3">
                         {products.map((p) => {
                             const img = p.product_images?.[0]?.url ?? null;

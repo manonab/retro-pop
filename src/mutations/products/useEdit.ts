@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabaseClient";
 import { useToast } from "@/components/ui/Toast";
 import { ToastType } from "@/components/ui/Toast/types";
-import type { EditProductInput } from "@/types/products";
+import type {EditProductInput} from "@/types/products";
 
 type UseEditProductOptions = {
     userId?: string;
@@ -37,7 +37,7 @@ export function useEditProduct(opts: UseEditProductOptions = {}) {
                 throw new Error("Non autorisé·e à modifier cette annonce.");
             }
 
-            const update: Record<string, any> = {};
+            const update: Partial<EditProductInput> = {};
             if (p.title !== undefined) update.title = p.title;
             if (p.description !== undefined) update.description = p.description;
             if (p.price !== undefined) update.price = p.price;
@@ -92,7 +92,7 @@ export function useEditProduct(opts: UseEditProductOptions = {}) {
             return updated;
         },
 
-        onSuccess: (product, variables) => {
+        onSuccess: (product) => {
             qc.invalidateQueries({ queryKey: ["productBySlug", product.slug] });
             if (userId) qc.invalidateQueries({ queryKey: ["my-products", userId] });
 

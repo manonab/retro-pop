@@ -9,15 +9,7 @@ import { Input } from "@/components/ui/Input";
 
 type Variant = "archive" | "arcade" | "cmyk" | "groovy" | "midcentury";
 
-export default function RetroPopHero({
-                                         variant = "arcade",
-                                         bgImage = "/hero-marketplace.jpg",
-                                         onSearch,
-                                     }: {
-    variant?: Variant;
-    bgImage?: string;
-    onSearch?: (q: string) => void;
-}) {
+export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { variant?: Variant; bgImage?: string; onSearchAction?: () => void; }) {
     const router = useRouter();
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -32,7 +24,7 @@ export default function RetroPopHero({
     function doSearch() {
         const q = searchQuery.trim();
         if (!q) return;
-        onSearch ? onSearch(q) : router.push(`/search?q=${encodeURIComponent(q)}`);
+        router.push(`/search?q=${encodeURIComponent(q)}`);
     }
     function onKey(e: KeyboardEvent<HTMLInputElement>) {
         if (e.key === "Enter") doSearch();

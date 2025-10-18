@@ -54,14 +54,12 @@ export default function NewProductPage() {
 
     return (
         <div className="min-h-screen bg-retro relative">
-            {/* ruban VHS décoratif */}
             <div
                 className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 -rotate-2 -z-10 h-14 w-[120%] opacity-70"
                 style={{ background: "var(--retro-gradient)" }}
             />
 
             <div className="container mx-auto px-4 py-10 max-w-3xl">
-                {/* Header */}
                 <header className="text-center mb-8">
                     <h1 className="title-vhs">
                         Créer une annonce
@@ -72,9 +70,7 @@ export default function NewProductPage() {
                     </p>
                 </header>
 
-                {/* Card formulaire */}
                 <section className="label-paper vhs-notch rounded-2xl p-6 md:p-8 border border-border bevel-card">
-                    {/* Mini info bar */}
                     <div className="mb-5 flex flex-wrap items-center gap-2 text-sm">
             <span className="rounded-full border border-[hsl(var(--border))] bg-white px-3 py-1">
               Connecté·e : <strong>{user?.email ?? "—"}</strong>
@@ -94,7 +90,7 @@ export default function NewProductPage() {
                                 await createProduct.mutateAsync(values);
                                 openToast({ type: ToastType.SUCCESS, description: "Annonce créée ✅" });
                                 router.push("/account");
-                            } catch (err) {
+                            } catch {
                                 openToast({ type: ToastType.ERROR, description: "Échec de la création" });
                             }
                         }}

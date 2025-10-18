@@ -8,6 +8,9 @@ export function useMyProductBySlug(user?: User | null, slug?: string) {
         queryKey: ["productBySlug", slug],
         enabled: !!user?.id && !!slug,
         queryFn: async (): Promise<ProductBase | null> => {
+            if (!user?.id || !slug) {
+                return null;
+            }
             const { data, error } = await supabase
                 .from("products")
                 .select(`
@@ -26,7 +29,7 @@ export function useMyProductBySlug(user?: User | null, slug?: string) {
                 updated_at,
                 product_images ( id, url, position )
                 `)
-                .eq("seller_id", user?.id!)
+                .eq("seller_id", user.id!)
                 .eq("slug", slug!)
                 .maybeSingle();
             if (error) throw error;

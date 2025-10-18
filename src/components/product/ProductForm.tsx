@@ -19,10 +19,10 @@ export type ProductFormValues = {
 };
 
 type Props = {
-    mode: "create" | "edit";
-    initialValues: ProductFormValues;
     categories: CategoryLite[];
+    initialValues: ProductFormValues;
     isSubmitting?: boolean;
+    mode: "create" | "edit";
     onSubmit: (values: ProductFormValues) => Promise<void> | void;
 };
 
