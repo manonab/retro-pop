@@ -3,14 +3,14 @@
 import { useState, KeyboardEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Search, Sparkles, Clock, Shield, ChevronRight } from "lucide-react";
+import { Search, Sparkles, Clock, Shield, ChevronRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 type Variant = "archive" | "arcade" | "cmyk" | "groovy" | "midcentury";
 
 export default function RetroPopHero({
-                                         variant = "archive",
+                                         variant = "arcade",
                                          bgImage = "/hero-marketplace.jpg",
                                          onSearch,
                                      }: {
@@ -23,162 +23,156 @@ export default function RetroPopHero({
 
     const features = [
         { icon: Sparkles, title: "Objets authentiques", description: "Vérifiés par nos experts" },
-        { icon: Clock, title: "Voyage dans le temps", description: "Du vintage des années 70-90" },
+        { icon: Clock, title: "Voyage dans le temps", description: "Du vintage des années 70–90" },
         { icon: Shield, title: "Achat sécurisé", description: "Garantie satisfait ou remboursé" },
     ];
 
-    const suggestions: string[] = ["Game Boy", "Vinyle Pink Floyd", "Affiche Jaws", "Walkman Sony"];
+    const suggestions = ["Game Boy", "Vinyle Pink Floyd", "Affiche Jaws", "Walkman Sony"];
 
     function doSearch() {
         const q = searchQuery.trim();
         if (!q) return;
         onSearch ? onSearch(q) : router.push(`/search?q=${encodeURIComponent(q)}`);
     }
-
     function onKey(e: KeyboardEvent<HTMLInputElement>) {
         if (e.key === "Enter") doSearch();
     }
 
-    const variantBg: Record<Variant, string> = {
-        archive: "", // on gère l'ambiance via noise/scanlines + voile en dégradé
-        arcade: "arcade-sunrise arcade-scanlines",
-        cmyk: "cmyk-halftone",
-        groovy: "groovy-stripes",
-        midcentury: "midcentury-arches",
-    };
-
     return (
-        <section className="relative overflow-hidden border-b border-border">
-            {/* Background image + overlays sobres */}
-            <div className="absolute inset-0 -z-10">
+        <section className="relative overflow-hidden border-b border-border bg-retro">
+            <div className="absolute inset-0 -z-20">
                 {!!bgImage && (
                     <Image
                         src={bgImage}
-                        alt="Marketplace vintage"
+                        alt="Univers Retro Pop"
                         fill
-                        className="object-cover opacity-20"
+                        className="object-cover opacity-[0.08]"
                         priority
                     />
                 )}
-
-                {/* motif optionnel selon variant (pas utilisé en 'archive') */}
-                {variant !== "archive" && <div className={`absolute inset-0 ${variantBg[variant]} opacity-[.18]`} />}
-
-                {/* voile doux pour lisibilité */}
-                <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/78 to-background/95" />
             </div>
 
-            {/* tape counter discret en haut à droite */}
-            <div className="absolute right-4 top-4 z-10 tape-counter text-xs md:text-sm select-none">
-                00:12:47
-            </div>
+            <div className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 -rotate-2 -z-10 h-40 w-[130%] opacity-60"
+                 style={{ background: "var(--retro-gradient)" }} />
+
+            <div
+                className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06]"
+                style={{
+                    backgroundImage:
+                        "repeating-linear-gradient(to bottom, rgba(0,0,0,.6) 0 2px, transparent 2px 4px)",
+                    mixBlendMode: "multiply",
+                }}
+            />
 
             <div className="relative container mx-auto px-4 py-16 md:py-24">
-                <div className="text-center max-w-4xl mx-auto vhs-noise vhs-scanlines rounded-2xl">
-                    {/* Heading */}
-                    <h1 className="text-4xl md:text-6xl font-extrabold text-foreground text-center leading-tight">
-                        Redonnons vie aux{" "}
-                        <span className="relative inline-block align-baseline">
-              <span className="px-3 py-1.5 sticker-vhs is-paper sticker-gloss label-corners text-dusk soft">
-                classiques
-              </span>
-            </span>
+                <div className="mx-auto max-w-6xl text-center">
+                    {/* Sticker Title VHS */}
+                    <h1
+                        className="title-vhs inline-block select-none"
+                        style={{
+                            background:
+                                "linear-gradient(90deg, hsl(var(--retro-violet)), hsl(var(--retro-rose)) 45%, hsl(var(--retro-blue)))",
+                            WebkitBackgroundClip: "text",
+                            color: "transparent",
+                            textShadow:
+                                "0 0 0.5em rgba(242,87,149,.25), 0 0 1.2em rgba(119,89,240,.20)",
+                        }}
+                    >
+                        Redonnons vie aux classiques
                     </h1>
 
-                    <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                        Découvrez, achetez et vendez les trésors vintage qui ont marqué notre époque. Des jeux rétro aux
-                        vinyles cultes, en passant par les films et objets de collection.
+                    <div className="divider-retro mx-auto mt-4" />
+
+                    <p className="mt-5 mx-auto max-w-2xl text-[hsl(var(--foreground)/0.78)] text-base md:text-lg">
+                        Chasse aux trésors : consoles, vinyles, VHS, affiches et objets cultes —{" "}
+                        <span className="font-semibold">sélectionnés, évalués, prêts à revivre</span>.
                     </p>
 
-                    {/* Search Bar */}
-                    <div className="max-w-2xl mx-auto mb-6">
-                        <div className="flex flex-col sm:flex-row gap-3 p-2 bg-card/85 backdrop-blur-sm rounded-2xl vhs-card">
-                            <div className="flex-1 relative">
+                    {/* Barre de recherche + CTA */}
+                    <div className="mt-8 max-w-3xl mx-auto">
+                        <div className="flex w-full">
+                            <div className="relative flex-1">
                                 <Input
                                     type="text"
-                                    placeholder="Ex: Console Nintendo, vinyle Pink Floyd, affiche Jaws…"
+                                    placeholder="Ex : Console Nintendo, vinyle Pink Floyd, affiche Jaws…"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     onKeyDown={onKey}
-                                    className="border-0 bg-transparent text-base h-12 pl-12"
                                     aria-label="Rechercher un objet vintage"
+                                    className="search-retro h-12 pl-11 pr-4"
                                 />
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[hsl(var(--border))] w-5 h-5" />
                             </div>
-                            <Button variant="hero" className="h-12 px-8" onClick={doSearch} aria-label="Chercher un trésor">
+
+                            <button
+                                onClick={doSearch}
+                                aria-label="Chercher un trésor"
+                                className="bouton-search h-12 ml-2 rounded-r-[12px]"
+                                style={{
+                                    clipPath:
+                                        "polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)",
+                                }}
+                            >
                                 Chercher un trésor
-                            </Button>
+                            </button>
+                        </div>
+
+                        {/* Suggestions */}
+                        <div className="mt-3 flex flex-wrap justify-center gap-2">
+                            {suggestions.map((s) => (
+                                <button
+                                    key={s}
+                                    onClick={() => setSearchQuery(s)}
+                                    className="px-3 py-1.5 text-sm rounded-full border border-[hsl(var(--border))] bg-white hover:border-[hsl(var(--retro-violet))] transition"
+                                >
+                                    {s}
+                                </button>
+                            ))}
                         </div>
                     </div>
 
-                    {/* Suggestion chips (étiquettes papier sobres) */}
-                    <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
-                        {suggestions.map((s) => (
-                            <button
-                                key={s}
-                                onClick={() => setSearchQuery(s)}
-                                aria-label={`Suggestion ${s}`}
-                                className="sticker-vhs is-paper sticker-gloss label-corners text-sm px-3 py-1.5 transition hover:translate-y-[-1px]"
-                                data-tone="cream"
-                            >
-                                {s}
-                            </button>
-                        ))}
-                    </div>
+                    {/* CTA principaux */}
+                    <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                        <button className="btn-sticker">
+                            Explorer les catégories <ChevronRight className="ml-2 w-5 h-5" />
+                        </button>
 
-                    {/* Features (cartes jaquettes sobres) */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
-                        {features.map((f, i) => (
-                            <div key={i} className="vhs-card p-5">
-                                <div className="w-14 h-14 mb-4 rounded-full grid place-items-center bg-muted text-foreground">
-                                    <f.icon className="w-7 h-7" />
-                                </div>
-                                <h3 className="text-base font-semibold mb-1">{f.title}</h3>
-                                <p className="text-muted-foreground text-sm">{f.description}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* CTAs */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button variant="hero" size="lg" className="text-lg h-14 px-8">
-                            Explorer les catégories
-                            <ChevronRight className="ml-2 w-5 h-5" />
-                        </Button>
                         <Button
                             variant="outline"
                             size="lg"
-                            className="sticker-vhs is-paper label-corners px-6 h-14 text-base"
-                            aria-label="Vendre un objet"
-                            data-tone="cream"
+                            className="h-12 px-6 rounded-xl font-semibold border-2 border-[hsl(var(--retro-violet))] text-[hsl(var(--retro-violet))] hover:bg-[hsl(var(--retro-violet))] hover:text-white"
                         >
                             Vendre un objet
                         </Button>
                     </div>
 
-                    {/* Trust marks */}
-                    <div className="mt-14 text-center">
-                        <p className="text-muted-foreground mb-4">Rejoignez notre communauté de passionnés</p>
-                        <div className="flex justify-center items-center gap-8 text-sm text-muted-foreground">
-                            <div>
-                                <span className="text-2xl font-extrabold text-foreground">2,500+</span>
-                                <p>Objets disponibles</p>
-                            </div>
-                            <div>
-                                <span className="text-2xl font-extrabold text-foreground">850+</span>
-                                <p>Collectionneurs actifs</p>
-                            </div>
-                            <div>
-                                <span className="text-2xl font-extrabold text-foreground">98%</span>
-                                <p>Satisfaction client</p>
-                            </div>
-                        </div>
+                    {/* Bandeau “lecture VHS” décoratif */}
+                    <div className="mt-10 inline-flex items-center gap-2 rounded-full px-3 py-1 border border-[hsl(var(--border))] bg-white/80 backdrop-blur">
+                        <Play className="w-4 h-4 text-[hsl(var(--retro-rose))]" />
+                        <span className="text-xs font-semibold tracking-wide uppercase">
+              Mode VHS activé
+            </span>
                     </div>
 
-                    {/* petit bandeau décoratif “jaquette” en bas */}
-                    <div className="mt-10 h-8 rounded-xl stripes-dusk soft" />
+                    {/* Features */}
+                    <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 text-left">
+                        {features.map(({ icon: Icon, title, description }, i) => (
+                            <div key={i} className="card-retro">
+                                <div className="w-12 h-12 mb-3 rounded-full grid place-items-center"
+                                     style={{ background: "hsl(var(--retro-blue) / .10)", color: "hsl(var(--retro-blue))" }}>
+                                    <Icon className="w-6 h-6" />
+                                </div>
+                                <h3 className="font-semibold">{title}</h3>
+                                <p className="text-sm text-[hsl(var(--foreground)/.65)]">{description}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
+
+            {/* Ruban dégradé (bas) */}
+            <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 rotate-1 -z-10 h-32 w-[120%] opacity-55"
+                 style={{ background: "var(--retro-gradient-alt)" }} />
         </section>
     );
 }

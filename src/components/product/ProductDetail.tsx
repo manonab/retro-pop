@@ -1,13 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, KeyboardEvent } from "react";
 import { Star } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import type { ProductDetailWithSeller } from "@/types/products";
 import Image from "next/image";
 import { AddToCartButton } from "@/components/AddToCartButton";
+import {TabsList, TabsTrigger, TabsContent, Tabs} from "@/components/ui/Tabs";
 
 type Props = { product: ProductDetailWithSeller };
 
@@ -23,36 +21,38 @@ const ProductDetail = ({ product }: Props) => {
     );
 
     const cover = images[selectedImage]?.url;
-
     const isConditionObject =
         product && typeof product.condition === "object" && product.condition !== null;
 
+
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-retro">
             <div className="container mx-auto px-4 py-8">
                 {/* ==== Top layout ==== */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-12">
                     {/* Left — Gallery */}
                     <div className="lg:col-span-7">
                         <div className="relative mb-4">
-                            <div className="relative w-full h-[420px] md:h-[520px] overflow-hidden rounded-2xl tape-window bevel-card">
+                            <div className="relative w-full h-[420px] md:h-[520px] overflow-hidden rounded-2xl tape-window bevel-card vhs-notch isolate">
                                 {cover && (
                                     <Image
                                         src={cover}
                                         alt={product.title}
                                         fill
-                                        className="object-cover"
+                                        className="object-cover z-0"
                                         priority
                                     />
                                 )}
-                                {/* VHS overlays */}
-                                <div className="absolute inset-0 scanlines opacity-30 pointer-events-none" />
-                                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/70 to-transparent" />
-                                {/* Rarity badge */}
+                                {/* VHS overlays (soft) */}
+                                <div className="absolute inset-0 z-10 img-wash" />
+                                <div className="absolute inset-0 z-10 img-bottom-gradient" />
+                                <div className="absolute inset-0 z-10 scanlines opacity-[.16] pointer-events-none" />
+
+                                {/* Rarity / condition */}
                                 {!!product.rarity && (
-                                    <Badge className="absolute top-4 left-4 border-0 bg-secondary text-secondary-foreground">
-                                        {product.rarity}
-                                    </Badge>
+                                    <span className="absolute top-4 left-4 z-20 condition-pill badge-condition-collector">
+                    {product.rarity}
+                  </span>
                                 )}
                             </div>
                         </div>
@@ -64,10 +64,14 @@ const ProductDetail = ({ product }: Props) => {
                                     <button
                                         key={img.id ?? i}
                                         onClick={() => setSelectedImage(i)}
-                                        className={`relative w-20 h-20 rounded-xl overflow-hidden border transition-all ${
+                                        onKeyDown={(e: KeyboardEvent<HTMLButtonElement>) => {
+                                            if (e.key === "ArrowRight") setSelectedImage((n) => Math.min(images.length - 1, n + 1));
+                                            if (e.key === "ArrowLeft") setSelectedImage((n) => Math.max(0, n - 1));
+                                        }}
+                                        className={`relative w-20 h-20 rounded-xl overflow-hidden border transition-all focus:outline-none focus:ring-2 focus:ring-[hsl(var(--retro-violet))] ${
                                             selectedImage === i
-                                                ? "border-primary ring-2 ring-primary/30"
-                                                : "border-border hover:border-primary/50"
+                                                ? "border-[hsl(var(--retro-violet))]"
+                                                : "border-border hover:border-[hsl(var(--retro-violet)/.6)]"
                                         }`}
                                         aria-label={`Voir l’image ${i + 1}`}
                                     >
@@ -85,20 +89,25 @@ const ProductDetail = ({ product }: Props) => {
 
                     {/* Right — Info / Buy box */}
                     <aside className="lg:col-span-5">
-                        <div className="lg:sticky lg:top-24 space-y-4">
-                            <h1 className="text-2xl md:text-3xl font-extrabold leading-tight">
+                        <div className="lg:sticky lg:top-24 space-y-5">
+                            {/* Title */}
+                            <h1 className="title-vhs" style={{ WebkitTextStroke: "1px hsl(var(--retro-violet)/.5)" }}>
                                 {product.title}
                             </h1>
 
                             {/* Condition + mini rating */}
                             <div className="flex flex-wrap items-center gap-2">
                                 {isConditionObject ? (
-                                    <Badge variant="outline">État: Voir détails</Badge>
+                                    <span className="condition-pill badge-condition-verygood">État : détails</span>
                                 ) : (
-                                    !!product.condition && <Badge variant="outline">{product.condition}</Badge>
+                                    !!product.condition && (
+                                        <span className="condition-pill badge-condition-verygood">
+                      {String(product.condition)}
+                    </span>
+                                    )
                                 )}
                                 <div className="flex items-center gap-1 text-amber-500">
-                                    <Star className="w-4 h-4 fill-current"/>
+                                    <Star className="w-4 h-4 fill-current" />
                                     <span className="text-sm">Qualité vérifiée</span>
                                 </div>
                             </div>
@@ -106,15 +115,10 @@ const ProductDetail = ({ product }: Props) => {
                             {/* Price & CTA */}
                             <div className="label-paper vhs-notch rounded-xl p-5 bevel-card">
                                 <div className="flex items-end justify-between gap-4">
-                                    <div>
-                                        <div className="flex items-center gap-3">
-                                            <div
-                                                className="relative sticker sticker-vhs sticker-gloss px-4 py-2 text-white text-xl font-extrabold">
-                                                {product.price}€
-                                            </div>
-                                        </div>
+                                    <div className="flex items-center gap-3">
+                                        <span className="price-sticker-simple">{product.price}€</span>
                                     </div>
-                                    <AddToCartButton productId={product.id}/>
+                                    <AddToCartButton productId={product.id} />
                                 </div>
                                 <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-muted-foreground">
                                     <div>✅ Paiement sécurisé</div>
@@ -132,31 +136,40 @@ const ProductDetail = ({ product }: Props) => {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-1 text-amber-500">
-                                        <Star className="w-4 h-4 fill-current"/>
+                                        <Star className="w-4 h-4 fill-current" />
                                         <span className="text-sm">Fiable</span>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </aside>
                 </div>
 
                 {/* ==== Tabs (description / specs / livraison) ==== */}
+                {/* ==== Tabs (description / specs / livraison) ==== */}
                 <Tabs defaultValue="description" className="mb-16">
-                    <TabsList className="grid w-full grid-cols-3 rounded-xl overflow-hidden">
-                        <TabsTrigger value="description"
-                                     className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">
+                    <TabsList className="grid w-full grid-cols-3 rounded-xl overflow-hidden border border-border bg-card">
+                        <TabsTrigger
+                            value="description"
+                            className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
+                        >
                             Description
                         </TabsTrigger>
-                        <TabsTrigger value="specs" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">
+                        <TabsTrigger
+                            value="specs"
+                            className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
+                        >
                             Caractéristiques
                         </TabsTrigger>
-                        <TabsTrigger value="shipping" className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground">
+                        <TabsTrigger
+                            value="shipping"
+                            className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
+                        >
                             Livraison
                         </TabsTrigger>
                     </TabsList>
 
+                    {/* Description */}
                     <TabsContent value="description" className="mt-6">
                         <div className="prose prose-neutral max-w-none">
                             <div className="whitespace-pre-line text-foreground">
@@ -165,6 +178,7 @@ const ProductDetail = ({ product }: Props) => {
                         </div>
                     </TabsContent>
 
+                    {/* Caractéristiques */}
                     <TabsContent value="specs" className="mt-6">
                         {isConditionObject ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -183,6 +197,7 @@ const ProductDetail = ({ product }: Props) => {
                         )}
                     </TabsContent>
 
+                    {/* Livraison */}
                     <TabsContent value="shipping" className="mt-6">
                         <div className="grid sm:grid-cols-3 gap-3">
                             <div className="bg-card border border-border rounded-lg p-3">
@@ -200,6 +215,7 @@ const ProductDetail = ({ product }: Props) => {
                         </div>
                     </TabsContent>
                 </Tabs>
+
 
                 {/* ==== Trust bar ==== */}
                 <section className="border-t border-border pt-8">

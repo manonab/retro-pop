@@ -3,14 +3,7 @@
 import { useState } from "react";
 import {
     User as UserIcon,
-    Mail,
-    Lock,
-    Eye,
-    EyeOff,
-    Phone,
-    MapPin,
-    Building2,
-    Hash,
+    Mail, Lock, Eye, EyeOff, Phone, MapPin, Building2, Hash,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
@@ -26,17 +19,17 @@ const RegisterForm = ({
     onSwitch: () => void;
 }) => {
     const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-        phone: "",
-        address: "",
-        city: "",
-        postalCode: "",
+        email: "", password: "", firstName: "", lastName: "",
+        phone: "", address: "", city: "", postalCode: "",
     });
     const [showPwd, setShowPwd] = useState(false);
     const { signup } = useAuth();
+
+    const canSubmit =
+        formData.email.trim() !== "" &&
+        formData.password.trim().length >= 6 &&
+        formData.firstName.trim() !== "" &&
+        formData.lastName.trim() !== "";
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { id, value } = e.target;
@@ -45,6 +38,7 @@ const RegisterForm = ({
 
     async function handleSignup(e: React.FormEvent) {
         e.preventDefault();
+        if (!canSubmit) return;
         try {
             await signup.mutateAsync({
                 email: formData.email,
@@ -57,37 +51,32 @@ const RegisterForm = ({
                 postalCode: formData.postalCode,
             });
             onSuccess();
-        } catch (err) {
-            // l'erreur est déjà dans signup.error
-            console.error("Erreur d'inscription:", err);
+        } catch {
+            /* handled by signup.error */
         }
     }
 
     return (
-        <div className="min-h-screen bg-background">
-            {/* Bande “VHS” top */}
-            <div className="vhs-scope relative border-b border-border overflow-hidden">
-                <div className="absolute inset-0 bg-secondary" />
-                <div className="absolute inset-0 scanlines opacity-25 pointer-events-none" />
-                <div className="absolute inset-0 tape-noise opacity-35 pointer-events-none" />
-                <div className="container mx-auto px-4 py-10 relative">
-                    <div className="flex flex-col items-center">
-                        <div className="w-16 h-16 bg-white/95 rounded-2xl grid place-items-center sticker shadow-card mb-4">
-                            <UserIcon className="w-8 h-8 text-foreground" />
-                        </div>
-                        <h1 className="text-3xl font-extrabold text-white chromatic">
-                            Créer un compte
-                        </h1>
-                        <p className="text-white/85 text-sm mt-1">
-                            Rejoignez la communauté Retro Pop
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <div className="min-h-screen bg-retro relative">
+            {/* Ruban VHS top */}
+            <div
+                className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 -rotate-2 -z-10 h-14 w-[120%] opacity-70"
+                style={{ background: "var(--retro-gradient)" }}
+            />
 
-            {/* Formulaire */}
             <div className="container mx-auto px-4 py-12">
-                <div className="max-w-md mx-auto">
+                {/* Header compact */}
+                <div className="text-center mb-8">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-2xl grid place-items-center sticker bevel-card">
+                        <UserIcon className="w-8 h-8 text-foreground" />
+                    </div>
+                    <h1 className="title-vhs">Créer un compte</h1>
+                    <div className="divider-retro mx-auto mt-3" />
+                    <p className="mt-2 text-sm text-muted-foreground">Rejoignez la communauté Retro Pop</p>
+                </div>
+
+                {/* Card formulaire */}
+                <div className="max-w-2xl  mx-auto">
                     <Card className="bevel-card">
                         <CardContent className="p-6">
                             <div className="label-paper vhs-notch rounded-xl p-5">
@@ -97,25 +86,19 @@ const RegisterForm = ({
                                         <div>
                                             <Label htmlFor="firstName">Prénom</Label>
                                             <Input
-                                                id="firstName"
-                                                type="text"
-                                                placeholder="Jean"
-                                                value={formData.firstName}
-                                                onChange={handleChange}
-                                                autoComplete="given-name"
-                                                required
+                                                id="firstName" type="text" placeholder="Jean"
+                                                value={formData.firstName} onChange={handleChange}
+                                                autoComplete="given-name" required
+                                                aria-invalid={!!signup.error && !formData.firstName}
                                             />
                                         </div>
                                         <div>
                                             <Label htmlFor="lastName">Nom</Label>
                                             <Input
-                                                id="lastName"
-                                                type="text"
-                                                placeholder="Dupont"
-                                                value={formData.lastName}
-                                                onChange={handleChange}
-                                                autoComplete="family-name"
-                                                required
+                                                id="lastName" type="text" placeholder="Dupont"
+                                                value={formData.lastName} onChange={handleChange}
+                                                autoComplete="family-name" required
+                                                aria-invalid={!!signup.error && !formData.lastName}
                                             />
                                         </div>
                                     </div>
@@ -126,15 +109,11 @@ const RegisterForm = ({
                                         <div className="relative mt-1">
                                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                                             <Input
-                                                id="email"
-                                                type="email"
-                                                inputMode="email"
-                                                autoComplete="email"
+                                                id="email" type="email" inputMode="email" autoComplete="email"
                                                 placeholder="jean.dupont@example.com"
-                                                value={formData.email}
-                                                onChange={handleChange}
-                                                className="pl-9"
-                                                required
+                                                value={formData.email} onChange={handleChange}
+                                                className="pl-9" required
+                                                aria-invalid={!!signup.error}
                                             />
                                         </div>
                                     </div>
@@ -145,27 +124,22 @@ const RegisterForm = ({
                                         <div className="relative mt-1">
                                             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                                             <Input
-                                                id="password"
-                                                type={showPwd ? "text" : "password"}
-                                                autoComplete="new-password"
-                                                placeholder="••••••••"
-                                                value={formData.password}
-                                                onChange={handleChange}
-                                                className="pl-9 pr-10"
-                                                required
+                                                id="password" type={showPwd ? "text" : "password"}
+                                                autoComplete="new-password" placeholder="••••••••"
+                                                value={formData.password} onChange={handleChange}
+                                                className="pl-9 pr-10" required
+                                                aria-invalid={!!signup.error}
                                             />
                                             <button
-                                                type="button"
-                                                onClick={() => setShowPwd((s) => !s)}
+                                                type="button" onClick={() => setShowPwd((s) => !s)}
                                                 className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-muted-foreground hover:text-foreground"
                                                 aria-label={showPwd ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                                                aria-pressed={showPwd}
                                             >
                                                 {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                             </button>
                                         </div>
-                                        <p className="text-xs text-muted-foreground mt-1">
-                                            8+ caractères recommandés.
-                                        </p>
+                                        <p className="text-xs text-muted-foreground mt-1">6+ caractères minimum.</p>
                                     </div>
 
                                     {/* Téléphone */}
@@ -174,14 +148,9 @@ const RegisterForm = ({
                                         <div className="relative mt-1">
                                             <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                                             <Input
-                                                id="phone"
-                                                type="tel"
-                                                inputMode="tel"
+                                                id="phone" type="tel" inputMode="tel" autoComplete="tel"
                                                 placeholder="+33 6 12 34 56 78"
-                                                value={formData.phone}
-                                                onChange={handleChange}
-                                                className="pl-9"
-                                                autoComplete="tel"
+                                                value={formData.phone} onChange={handleChange} className="pl-9"
                                             />
                                         </div>
                                     </div>
@@ -192,31 +161,23 @@ const RegisterForm = ({
                                         <div className="relative mt-1">
                                             <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                                             <Input
-                                                id="address"
-                                                type="text"
+                                                id="address" type="text" autoComplete="street-address"
                                                 placeholder="123 Rue de la Paix"
-                                                value={formData.address}
-                                                onChange={handleChange}
-                                                className="pl-9"
-                                                autoComplete="street-address"
+                                                value={formData.address} onChange={handleChange} className="pl-9"
                                             />
                                         </div>
                                     </div>
 
-                                    {/* Ville + Code postal */}
+                                    {/* Ville + CP */}
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <Label htmlFor="postalCode">Code postal</Label>
                                             <div className="relative mt-1">
                                                 <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                                                 <Input
-                                                    id="postalCode"
-                                                    type="text"
+                                                    id="postalCode" type="text" autoComplete="postal-code"
                                                     placeholder="75001"
-                                                    value={formData.postalCode}
-                                                    onChange={handleChange}
-                                                    className="pl-9"
-                                                    autoComplete="postal-code"
+                                                    value={formData.postalCode} onChange={handleChange} className="pl-9"
                                                 />
                                             </div>
                                         </div>
@@ -225,30 +186,25 @@ const RegisterForm = ({
                                             <div className="relative mt-1">
                                                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                                                 <Input
-                                                    id="city"
-                                                    type="text"
+                                                    id="city" type="text" autoComplete="address-level2"
                                                     placeholder="Paris"
-                                                    value={formData.city}
-                                                    onChange={handleChange}
-                                                    className="pl-9"
-                                                    autoComplete="address-level2"
+                                                    value={formData.city} onChange={handleChange} className="pl-9"
                                                 />
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* CTA */}
-                                    <Button
-                                        variant="hero"
-                                        className="w-full jitter"
+                                    {/* CTA simple cohérent DA */}
+                                    <button
                                         type="submit"
-                                        disabled={signup.isPending}
+                                        disabled={signup.isPending || !canSubmit}
+                                        className="btn-sticker w-full disabled:opacity-60"
                                         aria-busy={signup.isPending}
                                     >
                                         {signup.isPending ? "Inscription en cours..." : "S'inscrire"}
-                                    </Button>
+                                    </button>
 
-                                    {/* Lien vers connexion */}
+                                    {/* Switch vers login */}
                                     <p className="text-sm text-center text-muted-foreground">
                                         Déjà membre ?{" "}
                                         <Button
@@ -273,8 +229,8 @@ const RegisterForm = ({
                             {/* Trust row */}
                             <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-sm text-muted-foreground">
                                 <div className="bg-card border border-border rounded-lg p-3">
-                                    <div className="font-medium text-foreground">Aucun spam</div>
-                                    <div>Vos données restent privées</div>
+                                    <div className="font-medium text-foreground">Données privées</div>
+                                    <div>Aucun spam</div>
                                 </div>
                                 <div className="bg-card border border-border rounded-lg p-3">
                                     <div className="font-medium text-foreground">Support réactif</div>
@@ -289,6 +245,12 @@ const RegisterForm = ({
                     </Card>
                 </div>
             </div>
+
+            {/* Ruban VHS bas */}
+            <div
+                className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 rotate-1 -z-10 h-14 w-[115%] opacity-70"
+                style={{ background: "var(--retro-gradient-alt)" }}
+            />
         </div>
     );
 };

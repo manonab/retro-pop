@@ -16,38 +16,38 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
 
     async function handleLogin(e: FormEvent) {
         e.preventDefault();
+        if (!email || !password) return;
         try {
             await login.mutateAsync({ email, password });
             onSuccess();
-        } catch (error) {
-            // handled by login.error below
-            console.error("Erreur de connexion:", error);
+        } catch {
+            // handled by login.error UI
         }
     }
 
     return (
-        <div className="min-h-screen bg-background">
-            {/* Bande “VHS” header (scopée pour la vibe) */}
-            <div className="vhs-scope relative border-b border-border overflow-hidden">
-                <div className="absolute inset-0 bg-secondary" />
-                <div className="absolute inset-0 scanlines opacity-25 pointer-events-none" />
-                <div className="absolute inset-0 tape-noise opacity-35 pointer-events-none" />
-                <div className="container mx-auto px-4 py-10 relative">
-                    <div className="flex flex-col items-center">
-                        <div className="w-16 h-16 bg-white/95 rounded-2xl grid place-items-center sticker shadow-card mb-4">
-                            <UserIcon className="w-8 h-8 text-foreground" />
-                        </div>
-                        <h1 className="text-3xl font-extrabold text-white chromatic">Connexion</h1>
-                        <p className="text-white/85 text-sm mt-1">Accédez à votre compte Retro Pop</p>
-                    </div>
-                </div>
-            </div>
+        <div className="min-h-screen bg-retro relative">
+            {/* Ruban dégradé haut (vibe VHS) */}
+            <div
+                className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 -rotate-2 -z-10 h-14 w-[120%] opacity-70"
+                style={{ background: "var(--retro-gradient)" }}
+            />
 
             <div className="container mx-auto px-4 py-12">
+                {/* Header compact et lisible */}
+                <div className="text-center mb-8">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-2xl grid place-items-center sticker bevel-card">
+                        <UserIcon className="w-8 h-8 text-foreground" />
+                    </div>
+                    <h1 className="title-vhs">Connexion</h1>
+                    <div className="divider-retro mx-auto mt-3" />
+                    <p className="mt-2 text-sm text-muted-foreground">Accédez à votre compte Retro Pop</p>
+                </div>
+
                 <div className="max-w-md mx-auto">
                     <Card className="bevel-card">
                         <CardContent className="p-6">
-                            {/* Étiquette papier autour du formulaire */}
+                            {/* Formulaire dans une étiquette papier */}
                             <div className="label-paper vhs-notch rounded-xl p-5">
                                 <form className="space-y-4" onSubmit={handleLogin} noValidate>
                                     {/* Email */}
@@ -65,11 +65,12 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 className="pl-9"
                                                 required
+                                                aria-invalid={!!login.error}
                                             />
                                         </div>
                                     </div>
 
-                                    {/* Password */}
+                                    {/* Mot de passe */}
                                     <div>
                                         <Label htmlFor="loginPassword">Mot de passe</Label>
                                         <div className="relative mt-1">
@@ -83,19 +84,21 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                                 onChange={(e) => setPassword(e.target.value)}
                                                 className="pl-9 pr-10"
                                                 required
+                                                aria-invalid={!!login.error}
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPwd((s) => !s)}
                                                 className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-muted-foreground hover:text-foreground"
                                                 aria-label={showPwd ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                                                aria-pressed={showPwd}
                                             >
                                                 {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                             </button>
                                         </div>
                                     </div>
 
-                                    {/* Actions secondaires */}
+                                    {/* Options + lien reset */}
                                     <div className="flex items-center justify-between">
                                         <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
                                             <input type="checkbox" className="accent-primary" /> Se souvenir de moi
@@ -103,22 +106,21 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                         <Button
                                             type="button"
                                             className="text-sm text-primary hover:underline bg-transparent p-0 h-auto"
-                                            onClick={() => alert("Fonctionnalité de réinitialisation de mot de passe à implémenter")}
+                                            onClick={() => alert("Réinitialisation à implémenter")}
                                         >
                                             Mot de passe oublié ?
                                         </Button>
                                     </div>
 
-                                    {/* CTA */}
-                                    <Button
-                                        variant="hero"
-                                        className="w-full jitter"
+                                    {/* CTA : simple, cohérent avec ta DA */}
+                                    <button
                                         type="submit"
-                                        disabled={login.isPending}
+                                        disabled={login.isPending || !email || !password}
+                                        className="btn-sticker w-full disabled:opacity-60"
                                         aria-busy={login.isPending}
                                     >
                                         {login.isPending ? "Connexion en cours..." : "Se connecter"}
-                                    </Button>
+                                    </button>
 
                                     {/* Switch register */}
                                     <p className="text-sm text-center text-muted-foreground">
@@ -133,9 +135,11 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                         </Button>
                                     </p>
 
-                                    {/* Error */}
+                                    {/* Erreur */}
                                     {login.error && (
-                                        <p className="text-sm text-destructive text-center">{login.error.message}</p>
+                                        <p className="text-sm text-destructive text-center">
+                                            {login.error.message}
+                                        </p>
                                     )}
                                 </form>
                             </div>
@@ -161,6 +165,12 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                     </Card>
                 </div>
             </div>
+
+            {/* Ruban dégradé bas */}
+            <div
+                className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 rotate-1 -z-10 h-14 w-[115%] opacity-70"
+                style={{ background: "var(--retro-gradient-alt)" }}
+            />
         </div>
     );
 };

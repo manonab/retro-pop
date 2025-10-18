@@ -29,6 +29,8 @@ export default function RootLayout({
 }>) {
   return (
       <html lang="fr">
+      <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700;800&family=Inter:wght@400;600&display=swap"
+            rel="stylesheet"/>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
       <Providers>
           <AppToastProvider>
