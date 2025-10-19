@@ -6,6 +6,7 @@ import { useCategoryCatalog } from "@/queries/useCatalog";
 import type { ProductDetailWithSeller } from "@/types/products";
 import CategoryHeroVHS from "@/components/categories/CategoryHeroSection";
 import ProductCardVHS from "@/components/product/ProductCardVHS";
+import {Button} from "@/components/ui/Button";
 
 type CategoryLite = {
     id: number;
@@ -73,9 +74,6 @@ function coverFor(p: ProductDetailWithSeller): string | undefined {
 export function CatalogPageClient({ slug }: { slug: string }) {
     const [page, setPage] = useState<number>(1);
     const [q, setQ] = useState<string>("");
-
-    // Si ton hook est typable en générique, fais-le là-bas.
-    // Ici on garde "unknown" et on sécurise avec un type guard.
     const { data, isLoading, error } = useCategoryCatalog(slug);
 
     if (isLoading) {
@@ -87,30 +85,23 @@ export function CatalogPageClient({ slug }: { slug: string }) {
     }
 
     const { category, products, total } = data;
-    const safePageSize = data.pageSize > 0 ? data.pageSize : 24; // fallback safe
+    const safePageSize = data.pageSize > 0 ? data.pageSize : 24;
     const pages = Math.max(1, Math.ceil(total / safePageSize));
     const hasProducts = Array.isArray(products) && products.length > 0;
+    console.log(products)
 
     return (
         <div className="min-h-screen bg-retro relative">
-            {/* ruban VHS décoratif en haut */}
             <div
                 className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 -rotate-2 -z-10 h-14 w-[120%] opacity-70"
                 style={{ background: "var(--retro-gradient)" }}
                 aria-hidden="true"
             />
 
-            {/* Hero catégorie */}
             <CategoryHeroVHS category={category} total={total} />
 
-            {/* Barre filtres/recherche */}
             <div className="container mx-auto px-4 pt-4 pb-2">
-                <div
-                    className="
-            rounded-2xl border border-border bg-card/80 backdrop-blur p-3 md:p-4
-            shadow-[inset_0_1px_0_rgba(255,255,255,.35),0_8px_22px_rgba(0,0,0,.06)]
-          "
-                >
+                <div className="rounded-2xl border border-border bg-card/80 backdrop-blur p-3 md:p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.35),0_8px_22px_rgba(0,0,0,.06)]">
                     <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
                         {/* Search input VHS */}
                         <div className="relative w-full md:w-[460px]">
@@ -125,19 +116,14 @@ export function CatalogPageClient({ slug }: { slug: string }) {
                                 aria-label="Rechercher dans la catégorie"
                             />
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[hsl(var(--border))] w-4 h-4" />
-                            <button
+                            <Button
                                 className="bouton-search absolute right-1 top-1/2 -translate-y-1/2 rounded-md px-3 py-2 text-sm"
                                 type="button"
-                                onClick={() => {
-                                    // à brancher avec ton système de filtrage/pagination serveur si besoin
-                                    setPage(1);
-                                }}
-                            >
+                                onClick={() => { setPage(1);}}>
                                 Chercher
-                            </button>
+                            </Button>
                         </div>
 
-                        {/* Quick chips */}
                         <div className="flex flex-wrap gap-2">
                             {["Neuf", "Très bon état", "Collector"].map((tag) => (
                                 <button
@@ -151,7 +137,6 @@ export function CatalogPageClient({ slug }: { slug: string }) {
                             ))}
                         </div>
 
-                        {/* Compteurs & page à droite */}
                         <div className="md:ml-auto text-sm text-muted-foreground">
                             {total} article{total > 1 ? "s" : ""} • Page {page}/{pages}
                         </div>
@@ -201,7 +186,6 @@ export function CatalogPageClient({ slug }: { slug: string }) {
                 )}
             </div>
 
-            {/* ruban VHS décoratif en bas */}
             <div
                 className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 rotate-1 -z-10 h-14 w-[115%] opacity-70"
                 style={{ background: "var(--retro-gradient-alt)" }}

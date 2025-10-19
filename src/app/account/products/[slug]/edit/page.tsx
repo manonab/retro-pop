@@ -63,9 +63,6 @@ export default function EditProductPage() {
                 <section className="label-paper vhs-notch rounded-2xl p-6 md:p-8 border border-border bevel-card">
                     {/* Mini barre d’info */}
                     <div className="mb-5 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-            <span className="rounded-full border border-[hsl(var(--border))] bg-white px-3 py-1">
-              ID annonce&nbsp;: <strong>{product.id}</strong>
-            </span>
                         <span className="rounded-full border border-[hsl(var(--border))] bg-white px-3 py-1">
               Catégorie actuelle&nbsp;: <strong>{categories.find(c => c.id === product.category_id)?.name ?? "—"}</strong>
             </span>
@@ -90,7 +87,6 @@ export default function EditProductPage() {
                         }}
                     />
 
-                    {/* Tips discrets */}
                     <div className="mt-6 grid gap-3 sm:grid-cols-3 text-xs text-muted-foreground">
                         <div className="rounded-lg border border-border bg-card p-3">
                             📸 <span className="font-medium">Photos</span> — privilégie 1200px+, lumière neutre

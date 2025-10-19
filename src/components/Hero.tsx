@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Search, Sparkles, Clock, Shield, ChevronRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import Link from "next/link";
 
 type Variant = "archive" | "arcade" | "cmyk" | "groovy" | "midcentury";
 
@@ -128,14 +129,15 @@ export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { var
                         <button className="btn-sticker">
                             Explorer les catégories <ChevronRight className="ml-2 w-5 h-5" />
                         </button>
-
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            className="h-12 px-6 rounded-xl font-semibold border-2 border-[hsl(var(--retro-violet))] text-[hsl(var(--retro-violet))] hover:bg-[hsl(var(--retro-violet))] hover:text-white"
-                        >
+                        <Link href="/account/create" className="hidden sm:block">
+                            <Button
+                                variant="outline"
+                                size="lg"
+                                className="h-12 px-6 rounded-xl font-semibold border-2 border-[hsl(var(--retro-violet))] text-[hsl(var(--retro-violet))] hover:bg-[hsl(var(--retro-violet))] hover:text-white"
+                            >
                             Vendre un objet
-                        </Button>
+                            </Button>
+                        </Link>
                     </div>
 
                     {/* Bandeau “lecture VHS” décoratif */}

@@ -9,8 +9,8 @@ import { useCart } from "@/stores/useCart";
 
 export default function RetroPopHeader() {
     const router = useRouter();
-    const [search, setSearch] = useState("");
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [search, setSearch] = useState<string>("");
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const count = useCart((s) => s.count());
 
     const categories = [
@@ -21,7 +21,6 @@ export default function RetroPopHeader() {
         { name: "Goodies", path: "/catalog/collectibles" },
     ];
 
-    // Empêche le scroll quand le menu mobile est ouvert
     useEffect(() => {
         if (menuOpen) document.body.style.overflow = "hidden";
         else document.body.style.overflow = "";
@@ -159,26 +158,26 @@ export default function RetroPopHeader() {
                     role="dialog"
                     aria-modal="true"
                     className={[
-                        "absolute top-0 left-0 h-full w-[86%] max-w-sm bg-retro border-r border-[hsl(var(--border))] shadow-2xl",
+                        "absolute top-0 left-0 h-full w-[86%] max-w-sm",
+                        "bg-white/6 backdrop-blur-lg backdrop-saturate-150", // 👈 semi-transp + blur
+                        "text-white border-r border-white/15 shadow-2xl",
                         "transition-transform duration-300",
                         menuOpen ? "translate-x-0" : "-translate-x-full",
                     ].join(" ")}
                 >
-                    {/* Header panel */}
-                    <div className="flex items-center justify-between h-14 px-4 border-b border-[hsl(var(--border))]">
-                        <span className="title-vhs text-lg">Menu</span>
+                    <div className="flex items-center justify-between h-14 px-4 border-b border-white/15">
+                        <span className="title-vhs text-lg text-white">Menu</span> {/* 👈 force white */}
                         <button
                             type="button"
-                            className="btn-icon"
+                            className="btn-icon text-white/80 hover:text-white ring-1 ring-white/20 rounded-full"
                             aria-label="Fermer le menu"
                             onClick={() => setMenuOpen(false)}
                         >
-                            <X className="w-5 h-5" />
+                            <X className="w-5 h-5"/>
                         </button>
                     </div>
 
-                    {/* Search mobile */}
-                    <div className="p-4 border-b border-[hsl(var(--border))]">
+                    <div className="p-4 border-b border-white/15">
                         <div className="relative">
                             <input
                                 type="text"
@@ -186,32 +185,32 @@ export default function RetroPopHeader() {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                                className="search-retro h-11 pl-10 w-full"
+                                className="h-11 w-full pl-10 pr-3 rounded-md bg-white/10 text-white placeholder-white/70
+                   border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
                                 aria-label="Rechercher"
                             />
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(var(--border))]" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/70"/>
                         </div>
                         <button
                             type="button"
                             onClick={handleSearch}
-                            className="mt-3 w-full btn-cassette h-10"
+                            className="mt-3 w-full h-10 rounded-md border border-white/20 text-white hover:bg-white/10 transition"
                         >
                             Rechercher
                         </button>
                     </div>
 
-                    {/* Links */}
                     <nav className="p-2">
                         <ul className="space-y-1">
                             {categories.map((cat) => (
                                 <li key={cat.name}>
                                     <Link
                                         href={cat.path}
-                                        className="flex items-center justify-between rounded-lg px-3 py-3 hover:bg-white/60 transition"
+                                        className="flex items-center justify-between rounded-lg px-3 py-3 hover:bg-white/10 transition"
                                         onClick={() => setMenuOpen(false)}
                                     >
-                                        <span className="nav-retro">{cat.name}</span>
-                                        <span aria-hidden className="text-[hsl(var(--border))]">›</span>
+                                        <span className="nav-retro text-white">{cat.name}</span>
+                                        <span aria-hidden className="text-white/60">›</span>
                                     </Link>
                                 </li>
                             ))}
@@ -219,14 +218,21 @@ export default function RetroPopHeader() {
 
                         <div className="mt-4 grid grid-cols-2 gap-2">
                             <Link href="/account/create" onClick={() => setMenuOpen(false)}>
-                                <Button className="w-full btn-sticker">Vendre</Button>
+                                <button
+                                    className="w-full h-10 rounded-md border border-white/20 hover:bg-white/10 transition">
+                                    Vendre
+                                </button>
                             </Link>
                             <Link href="/account" onClick={() => setMenuOpen(false)}>
-                                <Button variant="outline" className="w-full">Mon compte</Button>
+                                <button
+                                    className="w-full h-10 rounded-md border border-white/20 hover:bg-white/10 transition">
+                                    Mon compte
+                                </button>
                             </Link>
                         </div>
                     </nav>
                 </div>
+
             </div>
         </header>
     );

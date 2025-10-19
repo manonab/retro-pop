@@ -92,7 +92,7 @@ export default function ProductCardVHS({ p, cover }: Props) {
 
                 <div className="mt-2 flex items-center justify-between text-sm">
                     <div className="text-muted-foreground line-clamp-1">
-                        {p.seller?.user_id ?? "Vendeur"}
+                        {p.seller?.display_name ?? "Vendeur"}
                     </div>
                 </div>
 
