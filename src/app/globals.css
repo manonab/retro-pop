@@ -108,6 +108,11 @@
             0 1px 1.5px hsl(var(--retro-blue) / .25);
   }
 
+  @media (max-width: 480px) {
+    .title-vhs {
+      display: none;
+    }
+  }
 
   .title-retro-sticker:hover {
     transform: rotate(0deg) translateY(-2px);

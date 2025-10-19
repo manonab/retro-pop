@@ -66,7 +66,7 @@ export default function RetroPopHeader() {
                   className="grid place-items-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 bg-white shadow-sm text-[hsl(var(--retro-blue))]">
                 <Videotape className="w-5 h-5 md:w-6 md:h-6"/>
               </span>
-                            <span className="title-vhs text-md md:text-3xl">Retro Pop</span>
+                            <span className="title-vhs md:text-3xl">Retro Pop</span>
                         </Link>
                     </div>
 
