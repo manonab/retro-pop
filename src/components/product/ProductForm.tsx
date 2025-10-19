@@ -95,7 +95,7 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
                     value={categoryId}
                     onChange={(e) => setCategoryId(Number(e.target.value))}
                 >
-                    <option value="">—</option>
+                    <option value="" disabled>— Choisir une catégorie —</option>
                     {categories.map((c) => (
                         <option key={c.id} value={c.id}>{c.name}</option>
                     ))}
@@ -110,6 +110,7 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
                 value={condition}
                 onChange={(e) => setCondition(e.target.value as ProductCondition)}
             >
+                <option value="" disabled>— Choisir la condition —</option>
                 {PRODUCT_CONDITIONS.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
 
@@ -135,6 +136,7 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
                     value={rarity ?? ""}
                     onChange={(e) => setRarity((e.target.value) as ProductRarity)}
                 >
+                    <option value="" disabled>— Choisir la rareté —</option>
                     {PRODUCT_RARITIES.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
             </div>

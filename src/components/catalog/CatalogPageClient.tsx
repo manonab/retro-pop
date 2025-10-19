@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCategoryCatalog } from "@/queries/useCatalog";
 import type { ProductDetailWithSeller } from "@/types/products";
 import CategoryHeroVHS from "@/components/categories/CategoryHeroSection";
 import ProductCardVHS from "@/components/product/ProductCardVHS";
-import {Button} from "@/components/ui/Button";
 
+/* ========= Types locaux (aides) ========= */
 type CategoryLite = {
     id: number;
     name: string;
@@ -25,16 +25,18 @@ type ProductImageLite = {
 
 type CatalogData = {
     category: CategoryLite;
-    products: ProductDetailWithSeller[];
-    total: number;     // total d’items
-    pageSize: number;  // taille de page côté API
+    products: ProductDetailWithSeller[]; // ⚠️ si ton hook renvoie ProductWithSeller[], aligne-le côté API
+    total: number;    // total côté API (non filtré client)
+    pageSize: number; // taille de page côté API
 };
 
-/** Type guard pour vérifier la forme de data à l’exécution */
+/* ========= Utils ========= */
+const norm = (s: string) =>
+    (s ?? "").normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+
 function isCatalogData(x: unknown): x is CatalogData {
     if (!x || typeof x !== "object") return false;
     const o = x as Record<string, unknown>;
-
     const cat = o.category as Record<string, unknown> | undefined;
     const products = o.products as unknown;
     const total = o.total;
@@ -46,19 +48,22 @@ function isCatalogData(x: unknown): x is CatalogData {
         typeof cat.name === "string" &&
         typeof cat.slug === "string";
 
-    const productsOk =
-        Array.isArray(products);
+    const productsOk = Array.isArray(products);
 
     const numbersOk =
-        typeof total === "number" && Number.isFinite(total) &&
-        typeof pageSize === "number" && Number.isFinite(pageSize);
+        typeof total === "number" &&
+        Number.isFinite(total) &&
+        typeof pageSize === "number" &&
+        Number.isFinite(pageSize);
 
     return catOk && productsOk && numbersOk;
 }
 
-/** helper sûr pour récupérer la cover d’un produit */
+/** Récupère la cover d’un produit */
 function coverFor(p: ProductDetailWithSeller): string | undefined {
-    const imgs = (p as unknown as { product_images?: ProductImageLite[] }).product_images ?? [];
+    const imgs =
+        (p as unknown as { product_images?: ProductImageLite[] }).product_images ??
+        [];
     if (!Array.isArray(imgs) || imgs.length === 0) return undefined;
 
     const sorted = [...imgs].sort((a, b) => {
@@ -71,24 +76,40 @@ function coverFor(p: ProductDetailWithSeller): string | undefined {
     return url ?? undefined;
 }
 
-export function CatalogPageClient({ slug }: { slug: string }) {
+export default function CatalogPageClient({ slug }: { slug: string }) {
     const [page, setPage] = useState<number>(1);
-    const [q, setQ] = useState<string>("");
+    const [q] = useState<string>("");
+
     const { data, isLoading, error } = useCategoryCatalog(slug);
+
+    const category = isCatalogData(data) ? data.category : null;
+    const products = useMemo<ProductDetailWithSeller[]>(
+        () => (isCatalogData(data) ? (data.products as ProductDetailWithSeller[]) : []),
+        [data]
+    );
+    const safePageSize = isCatalogData(data) && data.pageSize > 0 ? data.pageSize : 24;
+
+    const filtered = useMemo(() => {
+        const needle = norm(q.trim());
+        if (!needle) return products;
+        return products.filter((p) => {
+            const title = norm(String((p)?.title ?? ""));
+            const slugN = norm((p)?.slug ?? "");
+            return title.includes(needle) || slugN.includes(needle);
+        });
+    }, [products, q]);
+
+    const pages = Math.max(1, Math.ceil(filtered.length / safePageSize));
+    const start = (page - 1) * safePageSize;
+    const pageItems = filtered.slice(start, start + safePageSize);
+    const hasProducts = pageItems.length > 0;
 
     if (isLoading) {
         return <div className="container mx-auto px-4 py-10">Chargement…</div>;
     }
-
-    if (error || !isCatalogData(data)) {
+    if (error || !category) {
         return <div className="container mx-auto px-4 py-10">Catégorie introuvable</div>;
     }
-
-    const { category, products, total } = data;
-    const safePageSize = data.pageSize > 0 ? data.pageSize : 24;
-    const pages = Math.max(1, Math.ceil(total / safePageSize));
-    const hasProducts = Array.isArray(products) && products.length > 0;
-    console.log(products)
 
     return (
         <div className="min-h-screen bg-retro relative">
@@ -98,53 +119,40 @@ export function CatalogPageClient({ slug }: { slug: string }) {
                 aria-hidden="true"
             />
 
-            <CategoryHeroVHS category={category} total={total} />
+            <CategoryHeroVHS category={category} total={filtered.length} />
 
             <div className="container mx-auto px-4 pt-4 pb-2">
                 <div className="rounded-2xl border border-border bg-card/80 backdrop-blur p-3 md:p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.35),0_8px_22px_rgba(0,0,0,.06)]">
                     <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
-                        {/* Search input VHS */}
-                        <div className="relative w-full md:w-[460px]">
-                            <input
-                                className="search-retro h-11 pl-10 pr-28 w-full"
+                        {/* Search input */}
+{/*                        <div className="relative md:w-[460px]">
+                            <Input
+                                className="search-retro h-10 pl-10 pr-28"
                                 placeholder="Rechercher un produit…"
                                 value={q}
                                 onChange={(e) => {
-                                    setPage(1);
                                     setQ(e.target.value);
+                                    setPage(1);
                                 }}
+                                onKeyDown={handleEnter}
                                 aria-label="Rechercher dans la catégorie"
                             />
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[hsl(var(--border))] w-4 h-4" />
                             <Button
-                                className="bouton-search absolute right-1 top-1/2 -translate-y-1/2 rounded-md px-3 py-2 text-sm"
+                                className="absolute -right-12 top-1/2 -translate-y-1/2 h-10 px-3 rounded-md text-sm bg-[hsl(var(--retro-orange))] text-white shadow-[0_4px_10px_hsl(262_72%_40%/.18)]"
                                 type="button"
-                                onClick={() => { setPage(1);}}>
+                                onClick={() => setPage(1)}
+                            >
                                 Chercher
                             </Button>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2">
-                            {["Neuf", "Très bon état", "Collector"].map((tag) => (
-                                <button
-                                    key={tag}
-                                    className="px-3 py-1.5 text-xs md:text-sm rounded-full border border-[hsl(var(--border))]
-                             bg-white hover:border-[hsl(var(--retro-violet))] transition"
-                                    type="button"
-                                >
-                                    {tag}
-                                </button>
-                            ))}
-                        </div>
+                        </div>*/}
 
                         <div className="md:ml-auto text-sm text-muted-foreground">
-                            {total} article{total > 1 ? "s" : ""} • Page {page}/{pages}
+                            {filtered.length} article{filtered.length > 1 ? "s" : ""} • Page {page}/{pages}
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Grille produits */}
             <div className="container mx-auto px-4 pb-14">
                 {!hasProducts ? (
                     <div className="mt-6 rounded-xl border border-dashed border-border bg-card p-8 text-center">
@@ -152,13 +160,16 @@ export function CatalogPageClient({ slug }: { slug: string }) {
                     </div>
                 ) : (
                     <div className="mt-6 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                        {products.map((product: ProductDetailWithSeller) => (
-                            <ProductCardVHS key={product.id} p={product} cover={coverFor(product)} />
+                        {pageItems.map((product) => (
+                            <ProductCardVHS
+                                key={(product).id}
+                                p={product as ProductDetailWithSeller}
+                                cover={coverFor(product as ProductDetailWithSeller)}
+                            />
                         ))}
                     </div>
                 )}
 
-                {/* Pagination VHS */}
                 {pages > 1 && (
                     <nav className="mt-10 flex items-center justify-center gap-3" aria-label="Pagination">
                         <button
@@ -194,5 +205,3 @@ export function CatalogPageClient({ slug }: { slug: string }) {
         </div>
     );
 }
-
-export default CatalogPageClient;

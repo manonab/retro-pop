@@ -20,7 +20,7 @@ export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { var
         { icon: Shield, title: "Achat sécurisé", description: "Garantie satisfait ou remboursé" },
     ];
 
-    const suggestions = ["Game Boy", "Vinyle Pink Floyd", "Affiche Jaws", "Walkman Sony"];
+    const suggestions = ["Star Wars", "Vinyle Nirvana", "Pokemon", "Alien"];
 
     function doSearch() {
         const q = searchQuery.trim();
@@ -87,48 +87,47 @@ export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { var
                             <div className="relative flex-1">
                                 <Input
                                     type="text"
-                                    placeholder="Ex : Console Nintendo, vinyle Pink Floyd, affiche Jaws…"
+                                    placeholder="Ex : Zelda, Alien.."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     onKeyDown={onKey}
                                     aria-label="Rechercher un objet vintage"
                                     className="search-retro h-12 pl-11 pr-4"
                                 />
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[hsl(var(--border))] w-5 h-5" />
                             </div>
 
-                            <button
+                            <Button
                                 onClick={doSearch}
                                 aria-label="Chercher un trésor"
-                                className="bouton-search h-12 ml-2 rounded-r-[12px]"
-                                style={{
-                                    clipPath:
-                                        "polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)",
-                                }}
+                                className="btn-search shape-diamond h-12 px-4 md:px-5 rounded-r-xl"
                             >
+                                <Search className="w-4 h-4 mr-2" />
                                 Chercher un trésor
-                            </button>
+                            </Button>
                         </div>
 
                         {/* Suggestions */}
                         <div className="mt-3 flex flex-wrap justify-center gap-2">
                             {suggestions.map((s) => (
-                                <button
+                                <Button
                                     key={s}
                                     onClick={() => setSearchQuery(s)}
                                     className="px-3 py-1.5 text-sm rounded-full border border-[hsl(var(--border))] bg-white hover:border-[hsl(var(--retro-violet))] transition"
                                 >
                                     {s}
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     </div>
 
                     {/* CTA principaux */}
                     <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-                        <button className="btn-sticker">
-                            Explorer les catégories <ChevronRight className="ml-2 w-5 h-5" />
-                        </button>
+                        <Link href="/catalog">
+                            <Button className="btn-sticker">
+                                Explorer les catégories <ChevronRight className="ml-2 w-5 h-5" />
+                            </Button>
+                        </Link>
+
                         <Link href="/account/create" className="hidden sm:block">
                             <Button
                                 variant="outline"

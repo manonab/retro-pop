@@ -18,7 +18,7 @@ export default function RetroPopHeader() {
         { name: "Cinéma", path: "/catalog/movies" },
         { name: "Musique", path: "/catalog/music" },
         { name: "Livres", path: "/catalog/books" },
-        { name: "Goodies", path: "/catalog/collectibles" },
+        { name: "Figurines", path: "/catalog/collectibles" },
     ];
 
     useEffect(() => {
@@ -37,26 +37,34 @@ export default function RetroPopHeader() {
     }
 
     return (
-        <header className="sticky top-0 z-50 border-b border-[hsl(var(--border))] bg-retro/85 backdrop-blur supports-[backdrop-filter]:bg-retro/65">
+        <header
+            className={[
+                "sticky top-0 z-50 border-b border-[hsl(var(--border))]",
+                menuOpen
+                    ? "bg-white dark:bg-neutral-950"
+                    : "bg-retro/85 backdrop-blur supports-[backdrop-filter]:bg-retro/65",
+            ].join(" ")}
+        >
             <div className="container mx-auto px-4">
                 {/* Top bar */}
                 <div className="flex items-center justify-between h-16">
                     {/* Left: brand + burger (mobile) */}
                     <div className="flex items-center gap-3">
                         {/* Burger (md-) */}
-                        <button
+                        <Button
                             type="button"
                             className="md:hidden inline-flex items-center justify-center rounded-lg border border-[hsl(var(--border))] p-2"
                             aria-label="Ouvrir le menu"
                             aria-expanded={menuOpen}
                             onClick={() => setMenuOpen(true)}
                         >
-                            <Menu className="w-5 h-5" />
-                        </button>
+                            <Menu className="w-5 h-5"/>
+                        </Button>
 
                         <Link href="/" className="flex items-center gap-3">
-              <span className="grid place-items-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 bg-white shadow-sm text-[hsl(var(--retro-blue))]">
-                <Videotape className="w-5 h-5 md:w-6 md:h-6" />
+              <span
+                  className="grid place-items-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 bg-white shadow-sm text-[hsl(var(--retro-blue))]">
+                <Videotape className="w-5 h-5 md:w-6 md:h-6"/>
               </span>
                             <span className="title-vhs text-xl md:text-3xl">Retro Pop</span>
                         </Link>
@@ -74,34 +82,36 @@ export default function RetroPopHeader() {
                                 className="search-retro h-11 pl-10 rounded-l-lg border border-[hsl(var(--border))] w-full"
                                 aria-label="Rechercher un objet rétro"
                             />
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[hsl(var(--border))] w-4 h-4" />
+                            <Search
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-[hsl(var(--border))] w-4 h-4"/>
                         </div>
-                        <button
+                        <Button
                             type="button"
                             onClick={handleSearch}
                             className="btn-cassette h-11 px-5 rounded-r-lg"
                             aria-label="Rechercher"
                         >
                             Rechercher
-                        </button>
+                        </Button>
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center gap-2 md:gap-3">
-                        {/* Search icon (mobile) */}
-                        <button
-                            type="button"
-                            className="md:hidden btn-icon"
-                            aria-label="Rechercher"
-                            onClick={() => setMenuOpen(true)}
-                        >
-                            <Search className="w-4 h-4" />
-                        </button>
+                    <div className="flex items-center gap-2">
+                        <div className="md:hidden lg:hidden">
+                            <Button
+                                type="button"
+                                className="btn-icon"
+                                aria-label="Rechercher"
+                                onClick={() => setMenuOpen(true)}
+                            >
+                                <Search className="w-4 h-4"/>
+                            </Button>
+                        </div>
 
                         {/* Cart */}
                         <Link href="/cart" className="relative">
                             <Button variant="ghost" size="sm" className="font-semibold">
-                                <ShoppingCart className="w-4 h-4 mr-1" />
+                                <ShoppingCart className="w-4 h-4 mr-1"/>
                                 <span className="hidden sm:inline">Panier</span>
                             </Button>
                             {count > 0 && (
@@ -117,7 +127,7 @@ export default function RetroPopHeader() {
                         {/* Account */}
                         <Link href="/account">
                             <Button variant="ghost" size="sm" className="font-semibold">
-                                <User className="w-4 h-4 mr-1" />
+                                <User className="w-4 h-4 mr-1"/>
                                 <span className="hidden sm:inline">Compte</span>
                             </Button>
                         </Link>
@@ -164,14 +174,14 @@ export default function RetroPopHeader() {
                     {/* Header */}
                     <div className="flex items-center justify-between h-14 px-4 border-b border-[hsl(var(--border))]">
                         <span className="title-vhs text-lg text-foreground">Menu</span> {/* ✅ force la couleur */}
-                        <button
+                        <Button
                             type="button"
                             className="inline-flex items-center justify-center rounded-full p-2 hover:bg-[hsl(var(--background-alt))]"
                             aria-label="Fermer le menu"
                             onClick={() => setMenuOpen(false)}
                         >
                             <X className="w-5 h-5 text-foreground"/>
-                        </button>
+                        </Button>
                     </div>
 
                     {/* Search */}
@@ -218,16 +228,16 @@ export default function RetroPopHeader() {
                         </ul>
                         <div className="mt-4 grid grid-cols-2 gap-2">
                             <Link href="/account/create" onClick={() => setMenuOpen(false)}>
-                                <button
+                                <Button
                                     className="w-full h-10 rounded-md border border-[hsl(var(--border))] hover:bg-[hsl(var(--background-alt))] transition">
                                     Vendre
-                                </button>
+                                </Button>
                             </Link>
                             <Link href="/account" onClick={() => setMenuOpen(false)}>
-                                <button
+                                <Button
                                     className="w-full h-10 rounded-md border border-[hsl(var(--border))] hover:bg-[hsl(var(--background-alt))] transition">
                                     Mon compte
-                                </button>
+                                </Button>
                             </Link>
                         </div>
                     </nav>

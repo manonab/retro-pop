@@ -57,7 +57,7 @@ const Footer = () => {
                             <li><Link href="/catalog/movies" className="text-muted-foreground hover:text-[hsl(var(--retro-rose))]">Films & Séries</Link></li>
                             <li><Link href="/catalog/books" className="text-muted-foreground hover:text-[hsl(var(--retro-orange))]">Livres & BD</Link></li>
                             <li><Link href="/catalog/music" className="text-muted-foreground hover:text-[hsl(var(--retro-blue))]">Musique</Link></li>
-                            <li><Link href="/catalog/collectibles" className="text-muted-foreground hover:text-[hsl(var(--retro-violet))]">Goodies</Link></li>
+                            <li><Link href="/catalog/collectibles" className="text-muted-foreground hover:text-[hsl(var(--retro-violet))]">Figurines</Link></li>
                         </ul>
                     </div>
 

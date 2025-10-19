@@ -22,6 +22,7 @@ export default function ProductCardVHS({ p, cover }: Props) {
     const conditionClass = CONDITION_STYLE[conditionKey] ?? "badge-condition-default";
 
 
+    console.log(p)
     return (
         <article
             className="
@@ -29,7 +30,6 @@ export default function ProductCardVHS({ p, cover }: Props) {
         transition-all duration-300 hover:-translate-y-[2px] hover:shadow-[0_0_28px_hsl(271_80%_55%/.25)]
       "
         >
-            {/* VISUEL (jaquette 4:3) */}
             <Link href={`/product/${slug}`} className="block">
                 <div className="relative aspect-[4/3] vhs-notch overflow-hidden rounded-t-2xl">
                     {cover ? (
@@ -54,7 +54,7 @@ export default function ProductCardVHS({ p, cover }: Props) {
                     <div className="absolute inset-0 scanlines opacity-[0.18]"/>
 
                     {/* Badge prix (bas-gauche) */}
-                    <span className="price-sticker-simple">
+                    <span className="price-sticker-simple absolute bottom-2 left-2">
                         {p.price} €
                     </span>
                     <div className="absolute top-3 right-3 z-20">

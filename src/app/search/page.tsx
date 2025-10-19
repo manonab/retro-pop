@@ -1,15 +1,23 @@
-// app/search/page.tsx
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import SearchBox from "@/components/catalog/search/SearchBox";
 import ProductCardVHS from "@/components/product/ProductCardVHS";
 import { ProductDetailWithSeller } from "@/types/products";
-import {useSearchProducts} from "@/queries/useSeachProduct";
+import { useSearchProducts } from "@/queries/useSeachProduct";
+import { Input } from "@/components/ui/Input";
 
 export default function Page() {
+    return (
+        <Suspense fallback={<PageSkeleton />}>
+            <SearchPageInner />
+        </Suspense>
+    );
+}
+
+function SearchPageInner() {
     const sp = useSearchParams();
     const q = (sp.get("q") ?? "").trim();
 
@@ -36,7 +44,15 @@ export default function Page() {
                 {q ? `Résultats pour “${q}”` : "Explorer le catalogue"}
             </h1>
 
-            <SearchBox initialQuery={q} />
+            <Suspense
+                fallback={
+                    <div className="max-w-xl">
+                        <Input placeholder="Chargement…" disabled className="w-full" />
+                    </div>
+                }
+            >
+                <SearchBox initialQuery={q} />
+            </Suspense>
 
             {isLoading ? (
                 <p className="mt-6 text-muted-foreground">Chargement…</p>
@@ -59,9 +75,7 @@ export default function Page() {
                             <PageLink q={q} page={page - 1} disabled={page <= 1}>
                                 Précédent
                             </PageLink>
-                            <span className="text-sm">
-                Page {page} / {totalPages}
-              </span>
+                            <span className="text-sm">Page {page} / {totalPages}</span>
                             <PageLink q={q} page={page + 1} disabled={page >= totalPages}>
                                 Suivant
                             </PageLink>
@@ -69,6 +83,18 @@ export default function Page() {
                     )}
                 </>
             )}
+        </main>
+    );
+}
+
+function PageSkeleton() {
+    return (
+        <main className="container mx-auto px-4 py-8">
+            <h1 className="text-2xl font-bold mb-4">Recherche</h1>
+            <div className="max-w-xl">
+                <Input placeholder="Chargement…" disabled className="w-full" />
+            </div>
+            <p className="mt-6 text-muted-foreground">Chargement…</p>
         </main>
     );
 }

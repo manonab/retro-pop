@@ -145,31 +145,16 @@ const ProductDetail = ({ product }: Props) => {
                     </aside>
                 </div>
 
-                {/* ==== Tabs (description / specs / livraison) ==== */}
-                {/* ==== Tabs (description / specs / livraison) ==== */}
                 <Tabs defaultValue="description" className="mb-16">
                     <TabsList className="grid w-full grid-cols-3 rounded-xl overflow-hidden border border-border bg-card">
-                        <TabsTrigger
-                            value="description"
-                            className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
-                        >
+                        <TabsTrigger value="description" className="font-semibold" variant="vhs">
                             Description
                         </TabsTrigger>
-                        <TabsTrigger
-                            value="specs"
-                            className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
-                        >
+                        <TabsTrigger value="specs" className="font-semibold" variant="vhs">
                             Caractéristiques
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="shipping"
-                            className="data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground font-semibold"
-                        >
-                            Livraison
                         </TabsTrigger>
                     </TabsList>
 
-                    {/* Description */}
                     <TabsContent value="description" className="mt-6">
                         <div className="prose prose-neutral max-w-none">
                             <div className="whitespace-pre-line text-foreground">
@@ -197,23 +182,6 @@ const ProductDetail = ({ product }: Props) => {
                         )}
                     </TabsContent>
 
-                    {/* Livraison */}
-                    <TabsContent value="shipping" className="mt-6">
-                        <div className="grid sm:grid-cols-3 gap-3">
-                            <div className="bg-card border border-border rounded-lg p-3">
-                                <div className="text-xs text-muted-foreground">Préparation</div>
-                                <div className="font-medium">48h</div>
-                            </div>
-                            <div className="bg-card border border-border rounded-lg p-3">
-                                <div className="text-xs text-muted-foreground">Transport</div>
-                                <div className="font-medium">Colis suivi</div>
-                            </div>
-                            <div className="bg-card border border-border rounded-lg p-3">
-                                <div className="text-xs text-muted-foreground">Retours</div>
-                                <div className="font-medium">14 jours</div>
-                            </div>
-                        </div>
-                    </TabsContent>
                 </Tabs>
 
 

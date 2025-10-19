@@ -25,21 +25,22 @@ const triggerSize: Record<TabsSize, string> = {
     md: "px-4 py-2 text-sm rounded-lg",
 };
 
-/* ACTIVE styles selon variant (utilise data-[state=active]) */
 const triggerVariant: Record<TabsVariant, string> = {
     vhs: cn(
         "data-[state=active]:text-white data-[state=active]:shadow",
         "data-[state=active]:bg-[linear-gradient(120deg,hsl(var(--retro-violet)),hsl(var(--retro-rose)))]"
     ),
     pill: cn(
-        "data-[state=active]:text-[hsl(var(--retro-violet))] data-[state=active]:bg-white",
+        "data-[state=active]:text-white", // <--- forcé blanc
+        "data-[state=active]:bg-[hsl(var(--retro-violet))]",
         "data-[state=active]:border data-[state=active]:border-[hsl(var(--retro-violet))]"
     ),
     underline: cn(
         "rounded-none",
         "relative after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-[2px] after:scale-x-0 after:rounded",
         "after:bg-[linear-gradient(90deg,hsl(var(--retro-violet)),hsl(var(--retro-rose)),hsl(var(--retro-blue)))]",
-        "data-[state=active]:text-[hsl(var(--foreground))] data-[state=active]:after:scale-x-100",
+        "data-[state=active]:text-white", // <--- forcé blanc aussi
+        "data-[state=active]:after:scale-x-100",
         "after:transition-transform after:origin-left"
     ),
 };

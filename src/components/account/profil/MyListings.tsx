@@ -8,7 +8,7 @@ import { ProductBase } from "@/types/products";
 import { useRouter } from "next/navigation";
 import DeleteProductModal from "@/components/account/profil/DeleteProductModal";
 import { Button } from "@/components/ui/Button";
-import { Plus, Pencil, Trash2, MoreHorizontal } from "lucide-react";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 
 export default function MyListings({ userId }: { userId: string }) {
     const { data: products = [], isLoading, isError, error } = useMyProducts(userId);
@@ -72,7 +72,7 @@ export default function MyListings({ userId }: { userId: string }) {
                     <ul className="mt-2 space-y-3">
                         {products.map((p: ProductBase) => {
                             const img = p.product_images?.[0]?.url ?? null;
-                            const status = (p as any)?.status as string | undefined;
+                            const status = (p)?.status as string | undefined;
 
                             return (
                                 <li
