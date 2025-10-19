@@ -141,10 +141,7 @@ export default function RetroPopHeader() {
 
             {/* Mobile drawer */}
             <div
-                className={[
-                    "fixed inset-0 z-[60] md:hidden transition-opacity",
-                    menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
-                ].join(" ")}
+                className={["fixed inset-0 z-[60] md:hidden transition-opacity", menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",].join(" ")}
                 aria-hidden={!menuOpen}
             >
                 {/* Backdrop */}
@@ -153,31 +150,32 @@ export default function RetroPopHeader() {
                     onClick={() => setMenuOpen(false)}
                 />
 
-                {/* Panel */}
                 <div
                     role="dialog"
                     aria-modal="true"
                     className={[
                         "absolute top-0 left-0 h-full w-[86%] max-w-sm",
-                        "bg-white/6 backdrop-blur-lg backdrop-saturate-150", // 👈 semi-transp + blur
-                        "text-white border-r border-white/15 shadow-2xl",
+                        "bg-white text-foreground dark:bg-neutral-900",    // ✅ opaque
+                        "border-r border-[hsl(var(--border))] shadow-2xl",
                         "transition-transform duration-300",
                         menuOpen ? "translate-x-0" : "-translate-x-full",
                     ].join(" ")}
                 >
-                    <div className="flex items-center justify-between h-14 px-4 border-b border-white/15">
-                        <span className="title-vhs text-lg text-white">Menu</span> {/* 👈 force white */}
+                    {/* Header */}
+                    <div className="flex items-center justify-between h-14 px-4 border-b border-[hsl(var(--border))]">
+                        <span className="title-vhs text-lg text-foreground">Menu</span> {/* ✅ force la couleur */}
                         <button
                             type="button"
-                            className="btn-icon text-white/80 hover:text-white ring-1 ring-white/20 rounded-full"
+                            className="inline-flex items-center justify-center rounded-full p-2 hover:bg-[hsl(var(--background-alt))]"
                             aria-label="Fermer le menu"
                             onClick={() => setMenuOpen(false)}
                         >
-                            <X className="w-5 h-5"/>
+                            <X className="w-5 h-5 text-foreground"/>
                         </button>
                     </div>
 
-                    <div className="p-4 border-b border-white/15">
+                    {/* Search */}
+                    <div className="p-4 border-b border-[hsl(var(--border))]">
                         <div className="relative">
                             <input
                                 type="text"
@@ -185,19 +183,21 @@ export default function RetroPopHeader() {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                                className="h-11 w-full pl-10 pr-3 rounded-md bg-white/10 text-white placeholder-white/70
-                   border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                                className="h-11 w-full pl-10 pr-3 rounded-md
+                   bg-white text-foreground placeholder-muted-foreground
+                   border border-[hsl(var(--border))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--border))]/50"
                                 aria-label="Rechercher"
                             />
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/70"/>
+                            <Search
+                                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(var(--border))]"/>
                         </div>
-                        <button
+                        <Button
                             type="button"
                             onClick={handleSearch}
-                            className="mt-3 w-full h-10 rounded-md border border-white/20 text-white hover:bg-white/10 transition"
+                            className="mt-3 w-full h-10 rounded-md border border-[hsl(var(--border))] hover:bg-[hsl(var(--background-alt))] transition"
                         >
                             Rechercher
-                        </button>
+                        </Button>
                     </div>
 
                     <nav className="p-2">
@@ -206,33 +206,32 @@ export default function RetroPopHeader() {
                                 <li key={cat.name}>
                                     <Link
                                         href={cat.path}
-                                        className="flex items-center justify-between rounded-lg px-3 py-3 hover:bg-white/10 transition"
+                                        className="flex items-center justify-between rounded-lg px-3 py-3 hover:bg-[hsl(var(--background-alt))] transition"
                                         onClick={() => setMenuOpen(false)}
                                     >
-                                        <span className="nav-retro text-white">{cat.name}</span>
-                                        <span aria-hidden className="text-white/60">›</span>
+                                        <span
+                                            className="text-foreground font-medium">{cat.name}</span> {/* ✅ pas .nav-retro */}
+                                        <span aria-hidden className="text-[hsl(var(--border))]">›</span>
                                     </Link>
                                 </li>
                             ))}
                         </ul>
-
                         <div className="mt-4 grid grid-cols-2 gap-2">
                             <Link href="/account/create" onClick={() => setMenuOpen(false)}>
                                 <button
-                                    className="w-full h-10 rounded-md border border-white/20 hover:bg-white/10 transition">
+                                    className="w-full h-10 rounded-md border border-[hsl(var(--border))] hover:bg-[hsl(var(--background-alt))] transition">
                                     Vendre
                                 </button>
                             </Link>
                             <Link href="/account" onClick={() => setMenuOpen(false)}>
                                 <button
-                                    className="w-full h-10 rounded-md border border-white/20 hover:bg-white/10 transition">
+                                    className="w-full h-10 rounded-md border border-[hsl(var(--border))] hover:bg-[hsl(var(--background-alt))] transition">
                                     Mon compte
                                 </button>
                             </Link>
                         </div>
                     </nav>
                 </div>
-
             </div>
         </header>
     );
