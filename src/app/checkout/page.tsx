@@ -95,7 +95,6 @@ export default function CheckoutPage() {
         })();
     }, [router, syncToServer]);
 
-    // 2) Charger cartId
     const cartIdQuery = useQuery({
         queryKey: ["cartId", userId],
         enabled: !!userId,
@@ -106,14 +105,12 @@ export default function CheckoutPage() {
         staleTime: 60_000,
     });
 
-    // 3) Charger les product_ids du panier serveur
     const productIdsQuery = useQuery({
         queryKey: ["cartProductIds", cartIdQuery.data],
         enabled: !!cartIdQuery.data,
         queryFn: () => fetchServerCartProductIds(cartIdQuery.data as string),
     });
 
-    // 4) Hydrater produits
     const productsQuery = useQuery({
         queryKey: ["cartProducts", (productIdsQuery.data ?? []).join(",")],
         enabled: !!productIdsQuery.data && (productIdsQuery.data as string[]).length > 0,
