@@ -33,7 +33,6 @@ function extFromMime(mime: string): string {
     return "bin";
 }
 
-// Segments sûrs pour les clés Storage (ASCII, pas de slash, pas d’accents)
 function sanitizeSegment(s: string) {
     return (s || "")
         .normalize("NFD")

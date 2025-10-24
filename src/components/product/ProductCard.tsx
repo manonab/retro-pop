@@ -21,7 +21,6 @@ export default function ProductCard(p: Props) {
     return (
         <Card className="group overflow-hidden cyber-glow hover-electric transition-all duration-300 bg-card/80 backdrop-blur-sm">
             <Link href={`/product/${p.slug}`} className="block">
-                {/* Image */}
                 <div className="relative overflow-hidden h-48 bg-muted">
 
                     {p.rarity && (

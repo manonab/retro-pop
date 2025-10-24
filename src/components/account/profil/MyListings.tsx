@@ -49,7 +49,6 @@ export default function MyListings({ userId }: { userId: string }) {
                     </div>
                 )}
 
-                {/* Skeleton */}
                 {isLoading && (
                     <ul className="mt-2 space-y-3">
                         {Array.from({ length: 4 }).map((_, i) => (
@@ -67,7 +66,6 @@ export default function MyListings({ userId }: { userId: string }) {
                     </ul>
                 )}
 
-                {/* List */}
                 {!isLoading && products.length > 0 && (
                     <ul className="mt-2 space-y-3">
                         {products.map((p: ProductBase) => {
@@ -134,7 +132,6 @@ export default function MyListings({ userId }: { userId: string }) {
                                                 )}
                                             </div>
 
-                                            {/* Actions (mobile) */}
                                             <div className="mt-3 grid grid-cols-2 gap-2 md:hidden">
                                                 <Link href={`/account/products/${p.slug}/edit`}>
                                                     <Button variant="outline" className="w-full rounded-lg justify-center">
@@ -155,7 +152,6 @@ export default function MyListings({ userId }: { userId: string }) {
                                             </div>
                                         </div>
 
-                                        {/* Actions (desktop) */}
                                         <div className="hidden md:flex items-center gap-2 self-start">
                                             <Link href={`/account/products/${p.slug}/edit`}>
                                                 <Button variant="outline" className="rounded-lg">
@@ -176,7 +172,6 @@ export default function MyListings({ userId }: { userId: string }) {
                                         </div>
                                     </div>
 
-                                    {/* Liseré VHS sobre */}
                                     <div aria-hidden className="h-[3px] rounded-b-2xl" style={{ background: "var(--retro-gradient)" }} />
                                 </li>
                             );

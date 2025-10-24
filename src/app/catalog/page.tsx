@@ -8,7 +8,6 @@ import { CategoryLite } from "@/types/products";
 import { CategoryCardItem } from "@/components/categories/CategoryCard";
 import { Button } from "@/components/ui/Button";
 
-/* safer: handle null/undefined */
 const norm = (s?: string | null) =>
     (s ?? "").normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
 
@@ -23,7 +22,6 @@ const QUICK_TAGS: QuickTag[] = [
     { label: "Figurines", needle: norm("Figurines"), path: "/catalog/collectibles" },
 ];
 
-/* ---- Suspense wrapper (fixes the error) ---- */
 export default function CategoriesExplorePage() {
     return (
         <Suspense fallback={<PageSkeleton />}>
@@ -32,7 +30,6 @@ export default function CategoriesExplorePage() {
     );
 }
 
-/* ---- Your original logic lives here ---- */
 function CategoriesExplorePageInner() {
     const sp = useSearchParams(); // ✅ now inside Suspense
 
@@ -70,7 +67,6 @@ function CategoriesExplorePageInner() {
 
     return (
         <div className="min-h-screen bg-retro">
-            {/* Hero */}
             <section className="border-b border-[hsl(var(--border))] bg-retro/80 backdrop-blur">
                 <div className="container mx-auto px-4 py-8 md:py-10">
                     <div className="flex items-center gap-3 text-[hsl(var(--retro-violet))]">
@@ -132,7 +128,6 @@ function CategoriesExplorePageInner() {
     );
 }
 
-/* ---- Fallback UI while Suspense resolves ---- */
 function PageSkeleton() {
     return (
         <div className="min-h-screen bg-retro">

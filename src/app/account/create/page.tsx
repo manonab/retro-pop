@@ -96,7 +96,6 @@ export default function NewProductPage() {
                         }}
                     />
 
-                    {/* Tips discrets */}
                     <div className="mt-6 grid gap-3 sm:grid-cols-3 text-xs text-muted-foreground">
                         <div className="rounded-lg border border-border bg-card p-3">
                             📸 <span className="font-medium">Photos</span> — 3 minimum, 1200px+ conseillé
@@ -110,7 +109,6 @@ export default function NewProductPage() {
                     </div>
                 </section>
 
-                {/* Footer action */}
                 <footer className="mt-8 text-center">
                     <p className="text-xs text-muted-foreground">
                         En publiant, tu acceptes nos conditions et règles de la communauté.
@@ -118,7 +116,6 @@ export default function NewProductPage() {
                 </footer>
             </div>
 
-            {/* ruban VHS décoratif bas */}
             <div
                 className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 rotate-1 -z-10 h-14 w-[115%] opacity-70"
                 style={{ background: "var(--retro-gradient-alt)" }}

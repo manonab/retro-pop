@@ -46,14 +46,11 @@ export default function ProductCardVHS({ p, cover }: Props) {
                             className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--retro-blue)/.22)] to-[hsl(var(--retro-violet)/.22)]"/>
                     )}
 
-                    {/* Wash doux + gradient bas pour lisibilité */}
                     <div className="absolute inset-0 img-wash"/>
                     <div className="absolute inset-0 img-bottom-gradient"/>
 
-                    {/* Scanlines très légères */}
                     <div className="absolute inset-0 scanlines opacity-[0.18]"/>
 
-                    {/* Badge prix (bas-gauche) */}
                     <span className="price-sticker-simple absolute bottom-2 left-2">
                         {p.price} €
                     </span>
@@ -62,22 +59,9 @@ export default function ProductCardVHS({ p, cover }: Props) {
                             {p.condition ?? conditionKey}
                         </span>
                     </div>
-                    {/* Action favoris (optionnel) */}
-                    {/*                    <button
-                        type="button"
-                        aria-label="Ajouter aux favoris"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onFavToggle?.(p.id);
-                        }}
-                        className="absolute top-3 left-3 z-20 grid place-items-center w-9 h-9 rounded-full bg-white/85 border border-border hover:bg-white transition"
-                    >
-                        <Heart className="w-4 h-4 text-[hsl(var(--foreground))]"/>
-                    </button>*/}
                 </div>
             </Link>
 
-            {/* CONTENU */}
             <div className="p-4">
             <Link href={`/product/${slug}`} className="block">
                 <h3
@@ -96,7 +80,6 @@ export default function ProductCardVHS({ p, cover }: Props) {
                     </div>
                 </div>
 
-                {/* Ruban VHS décoratif en base */}
                 <div className="mt-4 h-1.5 w-full rounded-full" style={{ background: "var(--retro-gradient)" }} />
             </div>
         </article>

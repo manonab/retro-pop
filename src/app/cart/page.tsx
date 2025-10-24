@@ -35,7 +35,6 @@ export default function CartPage() {
     const remove = useCart((s) => s.remove);
     const clear = useCart((s) => s.clear);
 
-    // ids uniques et stables pour la clé de cache
     const ids = useMemo(
         () => Array.from(new Set(items.map((i) => i.product_id))),
         [items]
@@ -47,7 +46,6 @@ export default function CartPage() {
         enabled: ids.length > 0,
     });
 
-    // map rapide id -> product
     const byId = useMemo(() => {
         const m = new Map<string, ProductCard>();
         for (const p of products) m.set(p.id, p);

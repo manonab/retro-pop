@@ -7,7 +7,6 @@ export default function NotFound() {
                 404
             </h1>
 
-            {/* Message */}
             <p className="mt-4 text-lg md:text-xl text-[hsl(var(--foreground)/0.7)]">
                 Oups ! Cette page s’est perdue dans les archives VHS…
             </p>

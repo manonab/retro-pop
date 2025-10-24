@@ -14,7 +14,6 @@ export const useAuth = () => {
             return data;
         },
         onSuccess: async () => {
-            // ✅ Fusionner local -> serveur et vider le local après
             const cart = useCart.getState();
             try {
                 await cart.syncToServer({ mergeOnSync: true, clearLocalAfterSync: true });
@@ -73,7 +72,6 @@ export const useAuth = () => {
             }
         },
         onSuccess: async () => {
-            // (optionnel) même logique que login si tu connectes direct après signup
             const cart = useCart.getState();
             try {
                 await cart.syncToServer({ mergeOnSync: true, clearLocalAfterSync: true });
@@ -95,11 +93,10 @@ export const useAuth = () => {
             if (error) throw error;
         },
         onSuccess: () => {
-            // ✅ Vider totalement le panier côté client
             try {
                 const cart = useCart.getState();
-                cart.clear();                    // vide le store Zustand
-                localStorage.removeItem("cart_v1"); // supprime la persistance
+                cart.clear();
+                localStorage.removeItem("cart_v1");
             } catch (e) {
                 console.error("cart clear on logout failed:", e);
             }

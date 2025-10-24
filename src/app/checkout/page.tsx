@@ -205,7 +205,6 @@ export default function CheckoutPage() {
                         })}
                     </div>
 
-                    {/* Récap / paiement */}
                     <aside className="h-fit rounded-2xl border p-6">
                         <h2 className="text-xl font-semibold">Récapitulatif</h2>
 

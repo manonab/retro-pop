@@ -62,19 +62,16 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
 
     return (
         <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Titre */}
             <div>
                 <label htmlFor="title" className="block text-sm font-medium mb-1">Titre</label>
                 <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Console rétro..." required />
             </div>
 
-            {/* Description */}
             <div>
                 <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
                 <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Décrivez votre produit..." />
             </div>
 
-            {/* Prix + Devise */}
             <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-2">
                     <label htmlFor="price" className="block text-sm font-medium mb-1">Prix</label>
@@ -86,7 +83,6 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
                 </div>
             </div>
 
-            {/* Catégorie */}
             <div>
                 <label htmlFor="category" className="block text-sm font-medium mb-1">Catégorie</label>
                 <select
@@ -102,7 +98,6 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
                 </select>
             </div>
 
-            {/* État (condition) */}
             <label htmlFor="condition" className="block text-sm font-medium mb-1">État (condition)</label>
             <select
                 id="condition"
@@ -114,7 +109,6 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
                 {PRODUCT_CONDITIONS.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
 
-            {/* Statut */}
             <span className="block text-sm font-medium mb-1">Statut</span>
             <div className="flex items-center gap-4">
                 <label className="flex items-center gap-2">
@@ -127,7 +121,6 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
                 </label>
             </div>
 
-            {/* Rareté */}
             <div>
                 <label htmlFor="rarity" className="block text-sm font-medium mb-1">Rareté</label>
                 <select
@@ -141,7 +134,6 @@ export default function ProductForm({ mode, initialValues, categories, isSubmitt
                 </select>
             </div>
 
-            {/* Images */}
             <div>
                 <label htmlFor="images" className="block text-sm font-medium mb-1">Images</label>
                 <Input id="images" type="file" multiple accept="image/*" onChange={(e) => setImages(e.target.files)} />

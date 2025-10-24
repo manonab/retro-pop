@@ -46,11 +46,8 @@ export default function RetroPopHeader() {
             ].join(" ")}
         >
             <div className="container mx-auto px-4">
-                {/* Top bar */}
                 <div className="flex items-center justify-between h-16">
-                    {/* Left: brand + burger (mobile) */}
                     <div className="flex items-center gap-3">
-                        {/* Burger (md-) */}
                         <Button
                             type="button"
                             className="md:hidden inline-flex items-center justify-center rounded-lg border border-[hsl(var(--border))] p-2"
@@ -70,7 +67,6 @@ export default function RetroPopHeader() {
                         </Link>
                     </div>
 
-                    {/* Search (md+) */}
                     <div className="hidden md:flex items-center gap-2 flex-1 max-w-xl mx-6">
                         <div className="relative flex-1">
                             <input
@@ -124,7 +120,6 @@ export default function RetroPopHeader() {
                             )}
                         </Link>
 
-                        {/* Account */}
                         <Link href="/account">
                             <Button variant="ghost" size="sm" className="font-semibold">
                                 <User className="w-4 h-4 mr-1"/>
@@ -132,14 +127,12 @@ export default function RetroPopHeader() {
                             </Button>
                         </Link>
 
-                        {/* CTA */}
                         <Link href="/account/create" className="hidden sm:block">
                             <Button className="btn-sticker">Vendre un objet</Button>
                         </Link>
                     </div>
                 </div>
 
-                {/* Desktop nav */}
                 <nav className="hidden md:flex items-center gap-6 h-12 border-t border-[hsl(var(--border))]">
                     {categories.map((cat) => (
                         <Link key={cat.name} href={cat.path} className="nav-retro text-sm">
@@ -149,12 +142,10 @@ export default function RetroPopHeader() {
                 </nav>
             </div>
 
-            {/* Mobile drawer */}
             <div
                 className={["fixed inset-0 z-[60] md:hidden transition-opacity", menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",].join(" ")}
                 aria-hidden={!menuOpen}
             >
-                {/* Backdrop */}
                 <div
                     className="absolute inset-0 bg-black/40"
                     onClick={() => setMenuOpen(false)}
@@ -171,7 +162,6 @@ export default function RetroPopHeader() {
                         menuOpen ? "translate-x-0" : "-translate-x-full",
                     ].join(" ")}
                 >
-                    {/* Header */}
                     <div className="flex items-center justify-between h-14 px-4 border-b border-[hsl(var(--border))]">
                         <span className="title-vhs text-lg text-foreground">Menu</span> {/* ✅ force la couleur */}
                         <Button
@@ -184,7 +174,6 @@ export default function RetroPopHeader() {
                         </Button>
                     </div>
 
-                    {/* Search */}
                     <div className="p-4 border-b border-[hsl(var(--border))]">
                         <div className="relative">
                             <input

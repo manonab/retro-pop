@@ -10,12 +10,6 @@ type UseEditProductOptions = {
     userId?: string;
 };
 
-export const qk = {
-    productBySlug: (userId: string, slug: string) => ["productBySlug", userId, slug] as const,
-    myProducts: (userId: string) => ["my-products", userId] as const,
-    products: ["products"] as const,
-};
-
 export function useEditProduct(opts: UseEditProductOptions = {}) {
     const qc = useQueryClient();
     const { openToast } = useToast();

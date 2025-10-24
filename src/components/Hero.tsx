@@ -81,7 +81,6 @@ export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { var
                         <span className="font-semibold">sélectionnés, évalués, prêts à revivre</span>.
                     </p>
 
-                    {/* Barre de recherche + CTA */}
                     <div className="mt-8 max-w-3xl mx-auto">
                         <div className="flex w-full">
                             <div className="relative flex-1">
@@ -106,7 +105,6 @@ export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { var
                             </Button>
                         </div>
 
-                        {/* Suggestions */}
                         <div className="mt-3 flex flex-wrap justify-center gap-2">
                             {suggestions.map((s) => (
                                 <Button
@@ -120,7 +118,6 @@ export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { var
                         </div>
                     </div>
 
-                    {/* CTA principaux */}
                     <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
                         <Link href="/catalog">
                             <Button className="btn-sticker">
@@ -139,7 +136,6 @@ export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { var
                         </Link>
                     </div>
 
-                    {/* Bandeau “lecture VHS” décoratif */}
                     <div className="mt-10 inline-flex items-center gap-2 rounded-full px-3 py-1 border border-[hsl(var(--border))] bg-white/80 backdrop-blur">
                         <Play className="w-4 h-4 text-[hsl(var(--retro-rose))]" />
                         <span className="text-xs font-semibold tracking-wide uppercase">
@@ -147,7 +143,6 @@ export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { var
             </span>
                     </div>
 
-                    {/* Features */}
                     <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 text-left">
                         {features.map(({ icon: Icon, title, description }, i) => (
                             <div key={i} className="card-retro">
@@ -163,7 +158,6 @@ export default function RetroPopHero({ bgImage = "/hero-marketplace.jpg"}: { var
                 </div>
             </div>
 
-            {/* Ruban dégradé (bas) */}
             <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 rotate-1 -z-10 h-32 w-[120%] opacity-55"
                  style={{ background: "var(--retro-gradient-alt)" }} />
         </section>

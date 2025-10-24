@@ -13,7 +13,6 @@ const Dashboard = () => {
     const { logout } = useAuth();
     const [isRegistering, setIsRegistering] = useState<boolean>(false);
 
-    // ===== Loading =====
     if (isLoading) {
         return (
             <div className="min-h-screen grid place-items-center bg-retro">
@@ -29,7 +28,6 @@ const Dashboard = () => {
         );
     }
 
-    // ===== Auth =====
     if (!user) {
         return isRegistering ? (
             <div className="min-h-screen grid place-items-center bg-retro px-4 py-10">
@@ -48,19 +46,15 @@ const Dashboard = () => {
         );
     }
 
-    // ===== Dashboard =====
     return (
         <div className="min-h-screen bg-retro relative">
-            {/* ruban VHS décoratif haut */}
             <div
                 className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 -rotate-2 -z-10 h-14 w-[120%] opacity-70"
                 style={{ background: "var(--retro-gradient)" }}
             />
 
             <div className="container mx-auto px-4 py-8">
-                {/* En-tête profil dans une “étiquette papier” */}
                 <section className="label-paper rounded-2xl p-6 md:p-8 border border-border bevel-card">
-                    {/* Titre style VHS + petite séparation */}
                     <div className="mb-6 text-center">
                         <h1 className="title-vhs">Mon espace</h1>
                         <div className="divider-retro mx-auto mt-3" />
@@ -69,13 +63,11 @@ const Dashboard = () => {
                     <ProfileHeader user={user} onLogout={() => logout.mutate()} />
                 </section>
 
-                {/* Onglets / contenu */}
                 <section className="mt-8 rounded-2xl border border-border bg-card/85 backdrop-blur p-4 md:p-6 bevel-card">
                     <ProfileTabs user={user} />
                 </section>
             </div>
 
-            {/* ruban VHS décoratif bas */}
             <div
                 className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 rotate-1 -z-10 h-14 w-[115%] opacity-70"
                 style={{ background: "var(--retro-gradient-alt)" }}

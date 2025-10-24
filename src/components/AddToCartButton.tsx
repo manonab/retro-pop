@@ -18,7 +18,6 @@ export function AddToCartButton({
     async function onAdd() {
         add(productId);
         setAdded(true);
-        // micro feedback 1.2s puis retour à l'état normal
         setTimeout(() => setAdded(false), 1200);
     }
 

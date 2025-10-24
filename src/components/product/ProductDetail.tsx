@@ -28,9 +28,7 @@ const ProductDetail = ({ product }: Props) => {
     return (
         <div className="min-h-screen bg-retro">
             <div className="container mx-auto px-4 py-8">
-                {/* ==== Top layout ==== */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-12">
-                    {/* Left — Gallery */}
                     <div className="lg:col-span-7">
                         <div className="relative mb-4">
                             <div className="relative w-full h-[420px] md:h-[520px] overflow-hidden rounded-2xl tape-window bevel-card vhs-notch isolate">
@@ -43,12 +41,10 @@ const ProductDetail = ({ product }: Props) => {
                                         priority
                                     />
                                 )}
-                                {/* VHS overlays (soft) */}
                                 <div className="absolute inset-0 z-10 img-wash" />
                                 <div className="absolute inset-0 z-10 img-bottom-gradient" />
                                 <div className="absolute inset-0 z-10 scanlines opacity-[.16] pointer-events-none" />
 
-                                {/* Rarity / condition */}
                                 {!!product.rarity && (
                                     <span className="absolute top-4 left-4 z-20 condition-pill badge-condition-collector">
                     {product.rarity}
@@ -57,7 +53,6 @@ const ProductDetail = ({ product }: Props) => {
                             </div>
                         </div>
 
-                        {/* Thumbnails */}
                         {images.length > 1 && (
                             <div className="flex flex-wrap gap-3">
                                 {images.map((img, i) => (
@@ -87,15 +82,12 @@ const ProductDetail = ({ product }: Props) => {
                         )}
                     </div>
 
-                    {/* Right — Info / Buy box */}
                     <aside className="lg:col-span-5">
                         <div className="lg:sticky lg:top-24 space-y-5">
-                            {/* Title */}
                             <h1 className="title-vhs" style={{ WebkitTextStroke: "1px hsl(var(--retro-violet)/.5)" }}>
                                 {product.title}
                             </h1>
 
-                            {/* Condition + mini rating */}
                             <div className="flex flex-wrap items-center gap-2">
                                 {isConditionObject ? (
                                     <span className="condition-pill badge-condition-verygood">État : détails</span>
@@ -112,7 +104,6 @@ const ProductDetail = ({ product }: Props) => {
                                 </div>
                             </div>
 
-                            {/* Price & CTA */}
                             <div className="label-paper vhs-notch rounded-xl p-5 bevel-card">
                                 <div className="flex items-end justify-between gap-4">
                                     <div className="flex items-center gap-3">
@@ -126,7 +117,6 @@ const ProductDetail = ({ product }: Props) => {
                                 </div>
                             </div>
 
-                            {/* Seller card */}
                             <div className="bg-card border border-border rounded-xl p-4 bevel-card">
                                 <div className="flex items-center justify-between">
                                     <div>
@@ -163,7 +153,6 @@ const ProductDetail = ({ product }: Props) => {
                         </div>
                     </TabsContent>
 
-                    {/* Caractéristiques */}
                     <TabsContent value="specs" className="mt-6">
                         {isConditionObject ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -184,8 +173,6 @@ const ProductDetail = ({ product }: Props) => {
 
                 </Tabs>
 
-
-                {/* ==== Trust bar ==== */}
                 <section className="border-t border-border pt-8">
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center text-muted-foreground">
                         <div>

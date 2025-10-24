@@ -21,20 +21,18 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
             await login.mutateAsync({ email, password });
             onSuccess();
         } catch {
-            // handled by login.error UI
+            console.log("error")
         }
     }
 
     return (
         <div className="min-h-screen bg-retro relative">
-            {/* Ruban dégradé haut (vibe VHS) */}
             <div
                 className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 -rotate-2 -z-10 h-14 w-[120%] opacity-70"
                 style={{ background: "var(--retro-gradient)" }}
             />
 
             <div className="container mx-auto px-4 py-12">
-                {/* Header compact et lisible */}
                 <div className="text-center mb-8">
                     <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-2xl grid place-items-center sticker bevel-card">
                         <UserIcon className="w-8 h-8 text-foreground" />
@@ -47,10 +45,8 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                 <div className="max-w-md mx-auto">
                     <Card className="bevel-card">
                         <CardContent className="p-6">
-                            {/* Formulaire dans une étiquette papier */}
                             <div className="label-paper vhs-notch rounded-xl p-5">
                                 <form className="space-y-4" onSubmit={handleLogin} noValidate>
-                                    {/* Email */}
                                     <div>
                                         <Label htmlFor="loginEmail">Email</Label>
                                         <div className="relative mt-1">
@@ -70,7 +66,6 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                         </div>
                                     </div>
 
-                                    {/* Mot de passe */}
                                     <div>
                                         <Label htmlFor="loginPassword">Mot de passe</Label>
                                         <div className="relative mt-1">
@@ -98,7 +93,6 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                         </div>
                                     </div>
 
-                                    {/* Options + lien reset */}
                                     <div className="flex items-center justify-between">
                                         <label className="inline-flex items-center gap-2 text-sm text-muted-foreground">
                                             <input type="checkbox" className="accent-primary" /> Se souvenir de moi
@@ -112,7 +106,6 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                         </Button>
                                     </div>
 
-                                    {/* CTA : simple, cohérent avec ta DA */}
                                     <button
                                         type="submit"
                                         disabled={login.isPending || !email || !password}
@@ -122,7 +115,6 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                         {login.isPending ? "Connexion en cours..." : "Se connecter"}
                                     </button>
 
-                                    {/* Switch register */}
                                     <p className="text-sm text-center text-muted-foreground">
                                         Nouveau membre ?{" "}
                                         <Button
@@ -135,7 +127,6 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                         </Button>
                                     </p>
 
-                                    {/* Erreur */}
                                     {login.error && (
                                         <p className="text-sm text-destructive text-center">
                                             {login.error.message}
@@ -144,7 +135,6 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                                 </form>
                             </div>
 
-                            {/* Trust row */}
                             <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-sm text-muted-foreground">
                                 <div className="bg-card border border-border rounded-lg p-3">
                                     <div className="font-medium text-foreground">Paiements sécurisés</div>
@@ -166,7 +156,6 @@ const LoginForm = ({ onSuccess, onSwitch }: { onSuccess: () => void; onSwitch: (
                 </div>
             </div>
 
-            {/* Ruban dégradé bas */}
             <div
                 className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 rotate-1 -z-10 h-14 w-[115%] opacity-70"
                 style={{ background: "var(--retro-gradient-alt)" }}

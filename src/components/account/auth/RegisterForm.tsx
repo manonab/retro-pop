@@ -52,20 +52,18 @@ const RegisterForm = ({
             });
             onSuccess();
         } catch {
-            /* handled by signup.error */
+            console.log("error");
         }
     }
 
     return (
         <div className="min-h-screen bg-retro relative">
-            {/* Ruban VHS top */}
             <div
                 className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 -rotate-2 -z-10 h-14 w-[120%] opacity-70"
                 style={{ background: "var(--retro-gradient)" }}
             />
 
             <div className="container mx-auto px-4 py-12">
-                {/* Header compact */}
                 <div className="text-center mb-8">
                     <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-2xl grid place-items-center sticker bevel-card">
                         <UserIcon className="w-8 h-8 text-foreground" />
@@ -75,13 +73,11 @@ const RegisterForm = ({
                     <p className="mt-2 text-sm text-muted-foreground">Rejoignez la communauté Retro Pop</p>
                 </div>
 
-                {/* Card formulaire */}
                 <div className="max-w-2xl  mx-auto">
                     <Card className="bevel-card">
                         <CardContent className="p-6">
                             <div className="label-paper vhs-notch rounded-xl p-5">
                                 <form className="space-y-4" onSubmit={handleSignup} noValidate>
-                                    {/* Identité */}
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
                                             <Label htmlFor="firstName">Prénom</Label>
@@ -103,7 +99,6 @@ const RegisterForm = ({
                                         </div>
                                     </div>
 
-                                    {/* Email */}
                                     <div>
                                         <Label htmlFor="email">Email</Label>
                                         <div className="relative mt-1">
@@ -118,7 +113,6 @@ const RegisterForm = ({
                                         </div>
                                     </div>
 
-                                    {/* Mot de passe */}
                                     <div>
                                         <Label htmlFor="password">Mot de passe</Label>
                                         <div className="relative mt-1">
@@ -142,7 +136,6 @@ const RegisterForm = ({
                                         <p className="text-xs text-muted-foreground mt-1">6+ caractères minimum.</p>
                                     </div>
 
-                                    {/* Téléphone */}
                                     <div>
                                         <Label htmlFor="phone">Téléphone</Label>
                                         <div className="relative mt-1">
@@ -155,7 +148,6 @@ const RegisterForm = ({
                                         </div>
                                     </div>
 
-                                    {/* Adresse */}
                                     <div>
                                         <Label htmlFor="address">Adresse</Label>
                                         <div className="relative mt-1">
@@ -168,7 +160,6 @@ const RegisterForm = ({
                                         </div>
                                     </div>
 
-                                    {/* Ville + CP */}
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <Label htmlFor="postalCode">Code postal</Label>
@@ -194,7 +185,6 @@ const RegisterForm = ({
                                         </div>
                                     </div>
 
-                                    {/* CTA simple cohérent DA */}
                                     <button
                                         type="submit"
                                         disabled={signup.isPending || !canSubmit}
@@ -204,7 +194,6 @@ const RegisterForm = ({
                                         {signup.isPending ? "Inscription en cours..." : "S'inscrire"}
                                     </button>
 
-                                    {/* Switch vers login */}
                                     <p className="text-sm text-center text-muted-foreground">
                                         Déjà membre ?{" "}
                                         <Button
@@ -217,7 +206,6 @@ const RegisterForm = ({
                                         </Button>
                                     </p>
 
-                                    {/* Erreur */}
                                     {signup.error && (
                                         <p className="text-sm text-destructive text-center">
                                             {signup.error.message}
@@ -226,7 +214,6 @@ const RegisterForm = ({
                                 </form>
                             </div>
 
-                            {/* Trust row */}
                             <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-sm text-muted-foreground">
                                 <div className="bg-card border border-border rounded-lg p-3">
                                     <div className="font-medium text-foreground">Données privées</div>
@@ -246,7 +233,6 @@ const RegisterForm = ({
                 </div>
             </div>
 
-            {/* Ruban VHS bas */}
             <div
                 className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 rotate-1 -z-10 h-14 w-[115%] opacity-70"
                 style={{ background: "var(--retro-gradient-alt)" }}

@@ -77,22 +77,4 @@ export async function fetchProductDetailWithSeller(slug: string): Promise<Produc
     };
 }
 
-export async function fetchSimilar(productId: string, categoryId: number) {
-    const { data, error } = await supabase
-        .from("products")
-        .select(`
-      id, title, slug, price, currency, condition, rarity, status, created_at, updated_at,
-      category:categories ( id, name, slug ),
-      product_images ( url, position )
-    `)
-        .eq("status", "active")
-        .eq("category_id", categoryId)
-        .neq("id", productId)
-        .order("created_at", { ascending: false })
-        .limit(8);
-
-    if (error) throw error;
-    return data ?? [];
-}
-
 

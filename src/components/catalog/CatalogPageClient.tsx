@@ -25,12 +25,11 @@ type ProductImageLite = {
 
 type CatalogData = {
     category: CategoryLite;
-    products: ProductDetailWithSeller[]; // ⚠️ si ton hook renvoie ProductWithSeller[], aligne-le côté API
-    total: number;    // total côté API (non filtré client)
-    pageSize: number; // taille de page côté API
+    products: ProductDetailWithSeller[];
+    total: number;
+    pageSize: number;
 };
 
-/* ========= Utils ========= */
 const norm = (s: string) =>
     (s ?? "").normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
 
@@ -124,28 +123,6 @@ export default function CatalogPageClient({ slug }: { slug: string }) {
             <div className="container mx-auto px-4 pt-4 pb-2">
                 <div className="rounded-2xl border border-border bg-card/80 backdrop-blur p-3 md:p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.35),0_8px_22px_rgba(0,0,0,.06)]">
                     <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
-                        {/* Search input */}
-{/*                        <div className="relative md:w-[460px]">
-                            <Input
-                                className="search-retro h-10 pl-10 pr-28"
-                                placeholder="Rechercher un produit…"
-                                value={q}
-                                onChange={(e) => {
-                                    setQ(e.target.value);
-                                    setPage(1);
-                                }}
-                                onKeyDown={handleEnter}
-                                aria-label="Rechercher dans la catégorie"
-                            />
-                            <Button
-                                className="absolute -right-12 top-1/2 -translate-y-1/2 h-10 px-3 rounded-md text-sm bg-[hsl(var(--retro-orange))] text-white shadow-[0_4px_10px_hsl(262_72%_40%/.18)]"
-                                type="button"
-                                onClick={() => setPage(1)}
-                            >
-                                Chercher
-                            </Button>
-                        </div>*/}
-
                         <div className="md:ml-auto text-sm text-muted-foreground">
                             {filtered.length} article{filtered.length > 1 ? "s" : ""} • Page {page}/{pages}
                         </div>

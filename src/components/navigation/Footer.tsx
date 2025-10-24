@@ -6,7 +6,6 @@ import { Heart, Mail, MessageCircle, Shield, Truck } from "lucide-react";
 const Footer = () => {
     return (
         <footer className="bg-retro border-t border-border/60 relative">
-            {/* ruban VHS décoratif top */}
             <div
                 aria-hidden
                 className="pointer-events-none absolute -top-3 left-1/2 -translate-x-1/2 -rotate-1 h-2 w-[110%] opacity-80"
@@ -14,7 +13,6 @@ const Footer = () => {
             />
 
             <div className="container mx-auto px-4 py-12">
-                {/* Trust row */}
                 <section
                     className="label-paper rounded-2xl p-5 md:p-6 border border-border bevel-card mb-10"
                     aria-labelledby="trust"
@@ -48,7 +46,6 @@ const Footer = () => {
                     </div>
                 </section>
 
-                {/* Links */}
                 <nav className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10" aria-label="Pied de page">
                     <div>
                         <h4 className="font-semibold text-foreground mb-3">Catalogue</h4>
@@ -100,7 +97,6 @@ const Footer = () => {
                     </div>
                 </nav>
 
-                {/* Brand / Legal */}
                 <div className="border-t border-border/40 pt-8 text-center">
                     <div className="flex items-center justify-center gap-2 mb-3">
                         <div className="w-8 h-8 rounded-lg grid place-items-center"
@@ -122,7 +118,6 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* ruban VHS décoratif bas */}
             <div
                 aria-hidden
                 className="pointer-events-none absolute -bottom-3 left-1/2 -translate-x-1/2 rotate-1 h-2 w-[105%] opacity-80"
